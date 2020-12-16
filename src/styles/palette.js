@@ -4,6 +4,7 @@ const palette = {
   white: "#FDFDFD",
   pink: "#FEC2CA",
   pigPink: "#FCDFE4",
+  red: "#C90208",
 };
 
 export default palette;
