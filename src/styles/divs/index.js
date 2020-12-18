@@ -7,16 +7,22 @@ body{
   background-color:${palette.beige}
 }
 `;
-
-const RoundShadowBox = styled.div`
-  opacity: 0;
+const Box = styled.div`
+  margin: auto;
   width: ${({ width }) => width}rem;
+  height: ${({ height }) => height}rem;
+  font-size: ${({ size }) => size}rem;
+  margin-top: ${({ top }) => top}rem;
+  margin-left: ${({ left }) => left}rem;
+  margin-right: ${({ right }) => right}rem;
+  margin-bottom: ${({ bottom }) => bottom}rem;
+`;
+
+const RoundShadowBox = styled(Box)`
+  opacity: 0;
   background-color: ${palette.white};
   border-radius: 30px;
   box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.5);
-  margin: auto;
-  margin-top: ${({ top }) => top}rem;
-  margin-bottom: 1rem;
   padding: 2rem 4rem;
 
   display: flex;
@@ -28,14 +34,16 @@ const RoundShadowBox = styled.div`
 
 const ImageInputBox = styled.img`
   object-fit: cover;
-  width: 15rem;
-  height: 20rem;
+  width: ${({ width }) => width}rem;
+  height: ${({ height }) => height}rem;
+  background-color: ${({ img }) => (img ? "white" : palette.beige)};
   border-radius: 20px;
 `;
 
 const AlertBox = styled.div`
   opacity: 0;
-  animation: ${Ani.fadeIn} 1s 0s 1 running forwards;
+  animation: ${Ani.fadeInOut} 4s 0s 1 running forwards;
+
   position: fixed;
   height: 2rem;
   border-radius: 10px;
@@ -51,6 +59,8 @@ const AlertBox = styled.div`
     switch (props.severity) {
       case "warnning":
         return palette.red;
+      case "alram":
+        return palette.pink;
       default:
         return palette.beige;
     }
@@ -81,16 +91,9 @@ const MainContainer = styled.div`
 
 const ProfileImage = styled.img`
   object-fit: cover;
-  width: 30rem;
-  height: 35rem;
+  width: 25rem;
+  height: 33rem;
   border: none;
-`;
-
-const Box = styled.div`
-  font-size: ${({ size }) => size}rem;
-  margin-top: ${({ top }) => top}rem;
-  margin-left: ${({ left }) => left}rem;
-  margin-right: ${({ right }) => right}rem;
 `;
 
 const InLineBox = styled(Box)`
@@ -99,6 +102,34 @@ const InLineBox = styled(Box)`
 const FlexBoxRow = styled(Box)`
   display: flex;
   flex-direction: row;
+`;
+const FlexBoxColumn = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const ModalWhiteBox = styled(Box)`
+  position: fixed;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${palette.white};
+  box-sizing: border-box;
+  padding: ${({ padding }) => padding};
+  z-index: 999;
+`;
+
+const BlackOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 const D = {
   BeigeBackground,
@@ -110,5 +141,8 @@ const D = {
   ProfileImage,
   InLineBox,
   FlexBoxRow,
+  ModalWhiteBox,
+  BlackOverlay,
+  FlexBoxColumn,
 };
 export default D;

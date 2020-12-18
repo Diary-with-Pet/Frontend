@@ -38,5 +38,38 @@ const MenuIcon = styled.button`
   font-size: 2rem;
   margin-top: 4rem;
 `;
-const B = { RoundBtn, BorderRoundBtn, MenuIcon };
+
+const IconButton = styled.i`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: ${({ color }) => {
+    switch (color) {
+      case "pigPink":
+        return palette.pigPink;
+      default:
+        return;
+    }
+  }};
+  font-size: ${({ size }) => size}rem;
+  margin-top: ${({ top }) => top}rem;
+  margin-left: ${({ left }) => left}rem;
+  margin-right: ${({ right }) => right}rem;
+  margin-bottom: ${({ bottom }) => bottom}rem;
+
+  &:hover {
+    color: ${({ hover }) => {
+      switch (hover) {
+        case "pigPink":
+          return palette.pigPink;
+        case "magenta":
+          return palette.magenta;
+        default:
+          return;
+      }
+    }};
+  }
+`;
+const B = { RoundBtn, BorderRoundBtn, MenuIcon, IconButton };
 export default B;

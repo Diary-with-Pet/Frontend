@@ -6,7 +6,7 @@ const Alert = ({ message, severity, setVisible }) => {
   useEffect(() => {
     setTimeout(() => {
       setVisible(false);
-    }, 3500);
+    }, 4000);
   }, []);
 
   return (

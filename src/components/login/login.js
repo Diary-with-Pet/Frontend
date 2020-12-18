@@ -42,7 +42,6 @@ const Login = () => {
 
   return (
     <>
-      {" "}
       <D.BeigeBackground />
       {error && (
         <Alert

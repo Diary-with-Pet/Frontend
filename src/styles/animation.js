@@ -16,6 +16,21 @@ const fadeOut = keyframes`
   opacity:0%;
 }
 `;
+
+const fadeInOut = keyframes`
+0%{
+  opacity:0%;
+}
+
+30%,60%{
+  opacity:100%
+}
+100%{
+  opacity:0%;
+}
+
+`;
+
 const bounceIn = keyframes`
 0%, 100%, 20%, 40%, 60%, 80% {
     transition-timing-function: cubic-bezier(0.215, .61, .355, 1)
@@ -65,6 +80,6 @@ const rubberBand = keyframes`
     transform: scale3d(1, 1, 1)
   }
 }`;
-const Ani = { fadeIn, fadeOut, bounceIn, rubberBand };
+const Ani = { fadeIn, fadeOut, bounceIn, rubberBand, fadeInOut };
 
 export default Ani;

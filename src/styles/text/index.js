@@ -7,6 +7,7 @@ const Text = styled.div`
   margin-top: ${({ top }) => top}rem;
   margin-left: ${({ left }) => left}rem;
   margin-right: ${({ right }) => right}rem;
+  margin-bottom: ${({ bottom }) => bottom}rem;
 `;
 
 const Title = styled.h1`
@@ -26,7 +27,6 @@ const WhiteLight = styled(Text)`
   font-family: "Light";
   color: ${palette.white};
 `;
-
 const MagentaThin = styled(Text)`
   font-family: "Thin";
   color: ${palette.magenta};
@@ -35,5 +35,29 @@ const MagentaLight = styled(Text)`
   font-family: "Light";
   color: ${palette.magenta};
 `;
-const T = { Title, WhiteBold, WhiteLight, MagentaThin, MagentaLight };
+const PigPinkLight = styled(Text)`
+  font-family: "Light";
+  color: ${palette.pigPink};
+`;
+
+const BlakcLight = styled(Text)`
+  font-family: "Light";
+  color: black;
+`;
+
+const BlackThin = styled(Text)`
+  font-family: "Thin";
+  color: black;
+`;
+
+const T = {
+  Title,
+  WhiteBold,
+  WhiteLight,
+  MagentaThin,
+  MagentaLight,
+  PigPinkLight,
+  BlakcLight,
+  BlackThin,
+};
 export default T;

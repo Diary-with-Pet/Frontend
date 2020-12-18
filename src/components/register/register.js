@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
 import D from "../../styles/divs";
 import T from "../../styles/text";
 import I from "../../styles/inputs";
 import B from "../../styles/buttons";
-
-import { loginActions } from "../../modules";
-import { useDispatch, useSelector } from "react-redux";
 import defaulImage from "image/plus.jpg";
 import { useHistory } from "react-router-dom";
 import Alert from "api/Alert";
@@ -18,11 +15,14 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [image, setImage] = useState(defaulImage);
-  const [imagePath, setImagePath] = useState("");
+  const [image, setImage] = useState();
+  const [imagePath, setImagePath] = useState();
   const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("오류");
+  const isRightPassword = useMemo(() => passwordConfirm === password, [
+    passwordConfirm,
+    password,
+  ]);
   const imageReader = (e) => {
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
@@ -50,7 +50,7 @@ const Register = () => {
     } else if (password.length <= 0) {
       setErrorMessage(setNullError("비밀번호"));
       setError(true);
-    } else if (passwordConfirm !== password) {
+    } else if (!isRightPassword) {
       setErrorMessage("비밀번호가 일치하지 않습니다");
       setError(true);
     }
@@ -69,7 +69,12 @@ const Register = () => {
       <D.RoundShadowBox top="3" width="20">
         <T.Title>일기쓰개</T.Title>
         <label htmlFor="image">
-          <D.ImageInputBox src={image} />
+          <D.ImageInputBox
+            src={image}
+            width="15"
+            height="20"
+            img={imagePath !== undefined}
+          />
         </label>
         <I.ImageInput
           id="image"
