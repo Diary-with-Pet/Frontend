@@ -7,6 +7,7 @@ import B from "styles/buttons";
 
 import { loginActions } from "modules/login";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Alert from "api/Alert";
 
@@ -30,12 +31,13 @@ const Login = () => {
     } else if (password.length <= 0) {
       setErrorMessage("비밀번호를 입력해주세요");
       setError(true);
+    } else {
+      const data = {
+        email: email,
+        password: password,
+      };
+      dispatch(loginActions.loginRequest(data));
     }
-    const data = {
-      email: email,
-      password: password,
-    };
-    dispatch(loginActions.loginRequest(data));
 
     return;
   };
@@ -75,7 +77,7 @@ const Login = () => {
           top="1"
           onClick={(e) => dispatch(loginActions.gotoRegister())}
         >
-          회원가입
+          <Link>회원가입</Link>
         </B.BorderRoundBtn>
       </D.RoundShadowBox>
     </>

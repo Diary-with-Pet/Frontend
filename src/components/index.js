@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import { Login } from "components/login";
 import { Register } from "components/register";
+import { SideMenu } from "components/main/sideMenu";
 import Main from "components/main";
 
 const GlobalStyle = createGlobalStyle`

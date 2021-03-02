@@ -4,11 +4,12 @@ import { EditModal } from "./editModal";
 import T from "styles/text";
 import D from "styles/divs";
 import B from "styles/buttons";
+
 const MyPage = () => {
   const [modalVisible, setModalVisivle] = useState(false);
   return (
-    <>
-      <EditModal />
+    <div style={{ height: "100vh" }}>
+      {modalVisible && <EditModal setModalVisivle={setModalVisivle} />}
       <D.InLineBox left="0" top="0">
         <T.MagentaThin size="5" left="1">
           MY PAGE
@@ -36,7 +37,7 @@ const MyPage = () => {
           </D.InLineBox>
         </D.FlexBoxRow>
       </D.InLineBox>
-    </>
+    </div>
   );
 };
 

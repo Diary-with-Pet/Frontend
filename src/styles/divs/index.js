@@ -73,6 +73,8 @@ const AlertBox = styled.div`
 `;
 
 const SideBar = styled.div`
+  position: sticky;
+  top: 0;
   width: 7rem;
   height: 100vh;
   background-color: ${palette.magenta};
@@ -81,8 +83,11 @@ const SideBar = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  justify-content: space-between;
   margin-right: 0;
+
+  box-sizing: border-box;
+  padding-bottom: 50px;
 `;
 
 const MainContainer = styled.div`
@@ -102,6 +107,7 @@ const InLineBox = styled(Box)`
 const FlexBoxRow = styled(Box)`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 `;
 const FlexBoxColumn = styled(Box)`
   display: flex;

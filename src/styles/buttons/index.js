@@ -26,13 +26,13 @@ const RoundBtn = styled.button`
 const BorderRoundBtn = styled(RoundBtn)`
   background-color: ${palette.white};
   color: ${palette.magenta};
-  border: 2px solid ${palette.magenta};
+  border: 1px solid ${palette.magenta};
 `;
 
 const MenuIcon = styled.button`
   outline: none;
   border: none;
-  color: ${palette.pigPink};
+  color: ${({ isFocus }) => (isFocus ? palette.white : palette.pigPink)};
   background-color: ${palette.magenta};
 
   font-size: 2rem;
