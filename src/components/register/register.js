@@ -165,13 +165,13 @@ const Register = () => {
           회원가입
         </B.RoundBtn>
         <Link
+          to="/login"
           style={{
             textDecoration: "none",
             color: "#FF6C7F",
             cursor: "pointer",
             marginTop: "2rem",
           }}
-          to="/login"
         >
           로그인으로
         </Link>

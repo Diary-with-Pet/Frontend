@@ -4,7 +4,7 @@ const LOGIN_FAILURE = "LOGIN_FAILURE";
 
 const loginRequest = (data) => ({ type: LOGIN_REQUEST, data });
 const loginSuccess = () => ({ type: LOGIN_SUCCESS });
-const loginFailure = (reason) => ({ tpye: LOGIN_FAILURE, reason });
+const loginFailure = (reason) => ({ type: LOGIN_FAILURE, reason });
 
 const loginReducer = (state = {}, action) => {
   switch (action.type) {
