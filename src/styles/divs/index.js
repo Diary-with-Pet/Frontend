@@ -37,7 +37,7 @@ const ImageInputBox = styled.img`
   width: ${({ width }) => width}rem;
   height: ${({ height }) => height}rem;
   background-color: ${({ img }) => (img ? "white" : palette.beige)};
-  border-radius: 20px;
+  border-radius: ${({ radius }) => radius + "px"};
 `;
 
 const AlertBox = styled.div`
@@ -137,6 +137,95 @@ const BlackOverlay = styled.div`
 
   background-color: rgba(0, 0, 0, 0.5);
 `;
+
+const ScrollBox = styled.div`
+  margin: 0 5rem;
+  overflow: scroll;
+  width: 80vw;
+  height: 40rem;
+  background-color: white;
+  margin-top: 3rem;
+
+  box-sizing: border-box;
+  padding: 3rem;
+
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(28rem, auto));
+`;
+
+const RadiusBox = styled.div`
+  width: 30rem;
+  height: 15rem;
+  background-color: ${palette.beige};
+  border-radius: 10px;
+  font-size: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+`;
+
+const PetContainer = styled(RadiusBox)`
+  background-color: ${palette.pink};
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+`;
+
+const DragArea = styled.div`
+  width: 18rem;
+  height: 40rem;
+  background-color: ${({ type }) => {
+    switch (type) {
+      case "todo":
+        return palette.pigPink;
+      case "progress":
+        return palette.pink;
+      case "done":
+        return palette.beige;
+      default:
+        return;
+    }
+  }};
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+
+  color: white;
+  font-family: "Thin";
+  font-size: 3rem;
+`;
+
+const DragItem = styled.div`
+  width: 15rem;
+  margin: 0 0.5rem;
+  color: black;
+  font-size: 2rem;
+  border-radius: 10px;
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  padding: 0.3rem 1rem;
+  text-align: center;
+  background-color: ${palette.white};
+  margin: 0.5rem 0;
+`;
+
+const TextArea = styled.textarea`
+  height: 3rem;
+  font-family: "Thin";
+  font-size: 2rem;
+  color: black;
+  outline: none;
+  border: none;
+  resize: none;
+  cursor: ${({ readOnly }) => (readOnly ? "default" : "text")};
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const D = {
   BeigeBackground,
   RoundShadowBox,
@@ -150,5 +239,11 @@ const D = {
   ModalWhiteBox,
   BlackOverlay,
   FlexBoxColumn,
+  ScrollBox,
+  RadiusBox,
+  PetContainer,
+  DragArea,
+  DragItem,
+  TextArea,
 };
 export default D;

@@ -1,59 +1,100 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 
 import D from "../../styles/divs";
 import T from "../../styles/text";
 import I from "../../styles/inputs";
 import B from "../../styles/buttons";
-import defaulImage from "image/plus.jpg";
-import { useHistory } from "react-router-dom";
+
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Alert from "api/Alert";
+import profile from "../../image/profile.png";
+import { registerActions } from "../../modules/register";
 
 const Register = () => {
-  const history = useHistory();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [image, setImage] = useState();
-  const [imagePath, setImagePath] = useState();
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("오류");
-  const isRightPassword = useMemo(() => passwordConfirm === password, [
-    passwordConfirm,
-    password,
-  ]);
+  const store = useSelector((state) => state.registerReducer);
+  const history = useHistory();
+  useEffect(() => {
+    if (store.result === "success") {
+      history.push("/main");
+    } else if (store.result === "fail") {
+      setErrorMessage(store.reason);
+      setError(true);
+    }
+  }, [store]);
+
+  const registerDispatch = useDispatch();
   const imageReader = (e) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = function (result) {
-      setImage(result.target.result);
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(e);
+    fileReader.onload = (e) => {
+      dispatch({ type: "IMAGE", image: e.target.result });
     };
   };
 
-  const gotoLogin = () => {
-    history.push("/login");
+  const reducer = (state = data, action) => {
+    switch (action.type) {
+      case "NAME":
+        return { ...state, name: action.name };
+      case "EMAIL":
+        return { ...state, email: action.email };
+      case "PASSWORD":
+        return { ...state, password: action.password };
+      case "PASSWORDCONFIRM":
+        return {
+          ...state,
+          passwordConfirm: action.passwordConfirm,
+          isRightPassword: action.password === action.isRightPassword,
+        };
+      case "IMAGEPATH":
+        imageReader(action.imagePath);
+        return {
+          ...state,
+          imagePath: action.imagePath,
+        };
+      case "IMAGE":
+        return {
+          ...state,
+          image: action.image,
+        };
+      default:
+        return state;
+    }
   };
+
+  const [data, dispatch] = useReducer(reducer, {
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    image: "",
+    imagePath: "",
+    isRightPassword: true,
+  });
 
   const setNullError = (name) => `${name}은(는) 비워둘 수 없습니다`;
 
-  const onLogin = () => {
-    if (name.length <= 0) {
+  const onRegister = () => {
+    if (data.name.length <= 0) {
       setErrorMessage(setNullError("이름"));
       setError(true);
-    } else if (email.length <= 0) {
+    } else if (data.email.length <= 0) {
       setErrorMessage(setNullError("이메일"));
       setError(true);
-    } else if (!email.includes("@")) {
+    } else if (!data.email.includes("@")) {
       setErrorMessage("올바른 이메일을 적어주세요");
       setError(true);
-    } else if (password.length <= 0) {
+    } else if (data.password.length <= 0) {
       setErrorMessage(setNullError("비밀번호"));
       setError(true);
-    } else if (!isRightPassword) {
+    } else if (!data.isRightPassword) {
       setErrorMessage("비밀번호가 일치하지 않습니다");
       setError(true);
     }
+
+    registerDispatch(registerActions.registerRequest(data));
   };
 
   return (
@@ -70,59 +111,70 @@ const Register = () => {
         <T.Title>일기쓰개</T.Title>
         <label htmlFor="image">
           <D.ImageInputBox
-            src={image}
+            src={data.image ? data.image : profile}
             width="15"
             height="20"
-            img={imagePath !== undefined}
+            radius="20"
+            img={data.imagePath !== undefined}
           />
         </label>
         <I.ImageInput
           id="image"
           type="file"
           accept="image/*"
-          files={imagePath}
+          files={data.imagePath}
           onChange={(e) => {
-            setImagePath(e.target.value);
-            imageReader(e);
+            dispatch({ type: "IMAGEPATH", imagePath: e.target.files[0] });
           }}
         />
         <I.LoginInput
           top="1"
           placeholder="이름"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={data.name}
+          onChange={(e) => dispatch({ type: "NAME", name: e.target.value })}
         />
         <I.LoginInput
           top="2"
           placeholder="이메일"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={data.email}
+          onChange={(e) => dispatch({ type: "EMAIL", email: e.target.value })}
         />
         <I.LoginInput
           type="password"
           top="1"
           placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={data.password}
+          onChange={(e) =>
+            dispatch({ type: "PASSWORD", password: e.target.value })
+          }
         />
         <I.LoginInput
           type="password"
           top="1"
           placeholder="비밀번호 확인"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
+          value={data.passwordConfirm}
+          onChange={(e) =>
+            dispatch({
+              type: "PASSWORDCONFIRM",
+              passwordConfirm: e.target.value,
+            })
+          }
         />
-        <B.RoundBtn width="20" height="3" top="2" onClick={onLogin}>
+        <B.RoundBtn width="20" height="3" top="2" onClick={onRegister}>
           회원가입
         </B.RoundBtn>
-        <T.MagentaLight
-          top="1"
-          style={{ cursor: "pointer" }}
-          onClick={gotoLogin}
+        <Link
+          style={{
+            textDecoration: "none",
+            color: "#FF6C7F",
+            cursor: "pointer",
+            marginTop: "2rem",
+          }}
+          to="/login"
         >
           로그인으로
-        </T.MagentaLight>
+        </Link>
       </D.RoundShadowBox>
     </>
   );

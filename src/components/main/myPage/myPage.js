@@ -8,7 +8,7 @@ import B from "styles/buttons";
 const MyPage = () => {
   const [modalVisible, setModalVisivle] = useState(false);
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100vh", width: "100%" }}>
       {modalVisible && <EditModal setModalVisivle={setModalVisivle} />}
       <D.InLineBox left="0" top="0">
         <T.MagentaThin size="5" left="1">
@@ -27,7 +27,7 @@ const MyPage = () => {
                 hover="magenta"
                 onClick={() => setModalVisivle(true)}
               >
-                <i class="fas fa-edit"></i>
+                <i className="fas fa-edit"></i>
               </B.IconButton>
             </D.FlexBoxRow>
             <T.PigPinkLight size="1.5">이메일</T.PigPinkLight>

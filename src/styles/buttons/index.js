@@ -32,7 +32,7 @@ const BorderRoundBtn = styled(RoundBtn)`
 const MenuIcon = styled.button`
   outline: none;
   border: none;
-  color: ${({ isFocus }) => (isFocus ? palette.white : palette.pigPink)};
+  color: ${({ isFocus }) => (isFocus ? palette.white : "#ffbfca")};
   background-color: ${palette.magenta};
 
   font-size: 2rem;
@@ -48,6 +48,8 @@ const IconButton = styled.i`
     switch (color) {
       case "pigPink":
         return palette.pigPink;
+      case "beige":
+        return palette.beige;
       default:
         return;
     }
@@ -65,6 +67,8 @@ const IconButton = styled.i`
           return palette.pigPink;
         case "magenta":
           return palette.magenta;
+        case "red":
+          return palette.red;
         default:
           return;
       }

@@ -1,13 +1,20 @@
-import { takeEvery } from "redux-saga/effects";
-import { loginTypes } from "../modules/login";
+import { call, put, takeLatest } from "redux-saga/effects";
+import { loginTypes, loginActions } from "../modules/login";
 import { customHistory as history } from "../store";
 
-function loginRequest(action) {
-  console.log(action.data);
-  localStorage.setItem("accessToken", action.data);
-  history.push("/main");
+const callLogin = (data) => {
+  throw Error;
+};
+function* loginRequest(action) {
+  console.log("login");
+  try {
+    yield call(callLogin, action.data);
+    yield put(loginActions.loginSuccess());
+  } catch (e) {
+    yield put(loginActions.loginFailure());
+  }
 }
 
 export default function* loginSaga() {
-  yield takeEvery(loginTypes.LOGIN_REQUEST, loginRequest);
+  yield takeLatest(loginTypes.LOGIN_REQUEST, loginRequest);
 }
