@@ -1,12 +1,17 @@
-import React, { useState, useMemo, useReducer } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import D from "styles/divs";
 import I from "styles/inputs";
 import B from "styles/buttons";
 import Alert from "api/Alert";
+
 import CircleProgress from "api/CircleProgress";
+import { useDispatch, useSelector } from "react-redux";
+import { mypageActions } from "modules/mypage";
 
 const EditModal = ({ setModalVisivle }) => {
   const [error, setError] = useState(false);
+  const modalDispatch = useDispatch();
+  const store = useSelector((state) => state.mypageReducer);
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -20,16 +25,20 @@ const EditModal = ({ setModalVisivle }) => {
       case "BODY":
         return { ...state, body: action.body, bodyLength: action.body.length };
       default:
-        break;
+        return { ...state };
     }
   };
 
+  useEffect(() => {
+    modalDispatch(mypageActions.mypageRequest());
+  }, []);
+
   const [data, dispatch] = useReducer(reducer, {
-    image: null,
-    imagePath: "",
-    name: "",
-    body: "",
-    bodyLength: 0,
+    image: store.profileImage,
+    imagePath: store.profileImage,
+    name: store.name,
+    body: store.body,
+    bodyLength: store.body ? store.body.length : 0,
   });
 
   function imageReader(e) {
@@ -63,7 +72,6 @@ const EditModal = ({ setModalVisivle }) => {
               width="12"
               height="15"
               radius="20"
-              img={data.imagePath !== null}
             />
           </label>
           <I.ImageInput
@@ -91,13 +99,16 @@ const EditModal = ({ setModalVisivle }) => {
           <D.FlexBoxRow width="25">
             <D.FlexBoxRow width="5" style={{ margin: "0" }}>
               <CircleProgress max="800" cur={data.bodyLength} />
-              <text style={{ margin: "1.5rem 0" }}>{data.bodyLength}/800</text>
+              <p style={{ margin: "1.5rem 0" }}>{data.bodyLength}/800</p>
             </D.FlexBoxRow>
             <B.RoundBtn
               top="1"
               width="12"
               height="3"
-              onClick={() => setModalVisivle(false)}
+              onClick={() => {
+                modalDispatch(mypageActions.editRequest(data));
+                setModalVisivle(false);
+              }}
             >
               수정완료
             </B.RoundBtn>

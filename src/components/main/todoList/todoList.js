@@ -23,6 +23,12 @@ const task = [
     content: "cccccccccccccccccccccc",
     classification: 1,
   },
+  {
+    id: 3,
+    title: "cnrkcnrl",
+    content: "cccccccccccccccccccccc",
+    classification: 1,
+  },
 ];
 const TodoList = () => {
   const [list, setList] = useState(task);
@@ -71,49 +77,61 @@ const TodoList = () => {
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <D.InLineBox left="0" top="0">
+      <D.InLineBox left="20">
         <T.MagentaThin size="5" left="1">
           TO DO LIST
         </T.MagentaThin>
       </D.InLineBox>
-      <D.FlexBoxRow left="5" top="1" left="10" right="10">
-        <D.DragArea
-          type="todo"
-          onDragLeave={(e) => onDragLeave(e)}
-          onDragEnter={(e) => onDragEnter(e)}
-          onDragOver={(e) => onDragOver(e)}
-          onDrop={(e) => onDrop(e, 1)}
-        >
-          <T.WhiteThin>NO STARTED</T.WhiteThin>
-          {todo.map((e) => (
-            <TodoItem item={e}></TodoItem>
-          ))}
-        </D.DragArea>
-        <D.DragArea
-          type="progress"
-          onDragLeave={(e) => onDragLeave(e)}
-          onDragEnter={(e) => onDragEnter(e)}
-          onDragOver={(e) => onDragOver(e)}
-          onDrop={(e) => onDrop(e, 2)}
-        >
-          <T.WhiteThin>PROGRESS</T.WhiteThin>
-          {progress.map((e) => (
-            <TodoItem item={e}></TodoItem>
-          ))}
-        </D.DragArea>
-        <D.DragArea
-          type="done"
-          onDragLeave={(e) => onDragLeave(e)}
-          onDragEnter={(e) => onDragEnter(e)}
-          onDragOver={(e) => onDragOver(e)}
-          onDrop={(e) => onDrop(e, 3)}
-        >
-          <T.WhiteThin>COMPLETE</T.WhiteThin>
-          {done.map((e) => (
-            <TodoItem item={e}></TodoItem>
-          ))}
-        </D.DragArea>
-      </D.FlexBoxRow>
+      <div style={{ marginLeft: "10rem" }}>
+        <D.TodoInput>
+          <input />
+          <button>등록</button>
+        </D.TodoInput>
+        <D.FlexBoxRow left="5" top="1" left="10" right="10" width={55}>
+          <D.DragArea
+            type="todo"
+            onDragLeave={(e) => onDragLeave(e)}
+            onDragEnter={(e) => onDragEnter(e)}
+            onDragOver={(e) => onDragOver(e)}
+            onDrop={(e) => onDrop(e, 1)}
+          >
+            <T.WhiteThin>NO STARTED</T.WhiteThin>
+            <div class="container">
+              {todo.map((e) => (
+                <TodoItem item={e}></TodoItem>
+              ))}
+            </div>
+          </D.DragArea>
+          <D.DragArea
+            type="progress"
+            onDragLeave={(e) => onDragLeave(e)}
+            onDragEnter={(e) => onDragEnter(e)}
+            onDragOver={(e) => onDragOver(e)}
+            onDrop={(e) => onDrop(e, 2)}
+          >
+            <T.WhiteThin>PROGRESS</T.WhiteThin>
+            <div class="container">
+              {progress.map((e) => (
+                <TodoItem item={e}></TodoItem>
+              ))}
+            </div>
+          </D.DragArea>
+          <D.DragArea
+            type="done"
+            onDragLeave={(e) => onDragLeave(e)}
+            onDragEnter={(e) => onDragEnter(e)}
+            onDragOver={(e) => onDragOver(e)}
+            onDrop={(e) => onDrop(e, 3)}
+          >
+            <T.WhiteThin>COMPLETE</T.WhiteThin>
+            <div class="container">
+              {done.map((e) => (
+                <TodoItem item={e}></TodoItem>
+              ))}
+            </div>
+          </D.DragArea>
+        </D.FlexBoxRow>
+      </div>
     </div>
   );
 };

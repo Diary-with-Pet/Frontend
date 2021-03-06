@@ -10,7 +10,6 @@ const CircleProgress = ({ size, max, cur }) => {
   };
 
   const percentage = (cur / max) * 100;
-  console.log(cur);
   const strokeDasharray = `${percentage} ${100 - percentage}`;
 
   return (
@@ -21,7 +20,7 @@ const CircleProgress = ({ size, max, cur }) => {
             cx={circleConfig.x}
             cy={circleConfig.y}
             r={circleConfig.radio}
-            stroke-width="5"
+            strokeWidth="5"
             fill="transparent"
             stroke={palette.beige}
           />

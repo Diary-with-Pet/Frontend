@@ -1,9 +1,9 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { loginTypes, loginActions } from "../modules/login";
-import { customHistory as history } from "../store";
 
 const callLogin = (data) => {
   throw Error;
+  localStorage.setItem("accessToken", "");
 };
 function* loginRequest(action) {
   console.log("login");

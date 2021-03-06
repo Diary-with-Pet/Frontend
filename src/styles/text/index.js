@@ -31,6 +31,9 @@ const WhiteLight = styled(Text)`
 const WhiteThin = styled(Text)`
   font-family: "Thin";
   color: ${palette.white};
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const MagentaThin = styled(Text)`
   font-family: "Thin";

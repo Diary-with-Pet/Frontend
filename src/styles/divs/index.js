@@ -4,7 +4,8 @@ import Ani from "styles/animation";
 
 const BeigeBackground = createGlobalStyle`
 body{
-  background-color:${palette.beige}
+  background-color:${palette.beige};
+
 }
 `;
 const Box = styled.div`
@@ -36,7 +37,6 @@ const ImageInputBox = styled.img`
   object-fit: cover;
   width: ${({ width }) => width}rem;
   height: ${({ height }) => height}rem;
-  background-color: ${({ img }) => (img ? "white" : palette.beige)};
   border-radius: ${({ radius }) => radius + "px"};
 `;
 
@@ -107,6 +107,7 @@ const InLineBox = styled(Box)`
 const FlexBoxRow = styled(Box)`
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
 `;
 const FlexBoxColumn = styled(Box)`
@@ -129,11 +130,12 @@ const ModalWhiteBox = styled(Box)`
 `;
 
 const BlackOverlay = styled.div`
-  position: absolute;
+  overflow: hidden;
+  position: fixed;
   top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
 
   background-color: rgba(0, 0, 0, 0.5);
 `;
@@ -141,7 +143,7 @@ const BlackOverlay = styled.div`
 const ScrollBox = styled.div`
   margin: 0 5rem;
   overflow: scroll;
-  width: 80vw;
+
   height: 40rem;
   background-color: white;
   margin-top: 3rem;
@@ -151,11 +153,27 @@ const ScrollBox = styled.div`
 
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(28rem, auto));
+  grid-template-columns: repeat(2, minmax(20rem, auto));
+  @media screen and (max-width: 1350px) {
+    width: 45rem;
+    grid-template-columns: repeat(1, minmax(20rem, auto));
+  }
+
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+
+    border-radius: 20px;
+    background: #d7d7d7;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${palette.magenta};
+    border-radius: 20px;
+  }
 `;
 
 const RadiusBox = styled.div`
-  width: 30rem;
+  width: 35rem;
   height: 15rem;
   background-color: ${palette.beige};
   border-radius: 10px;
@@ -167,14 +185,20 @@ const RadiusBox = styled.div`
 `;
 
 const PetContainer = styled(RadiusBox)`
+  width: 35rem;
   background-color: ${palette.pink};
-  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
   display: flex;
+  position: relative;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const DragArea = styled.div`
   width: 18rem;
-  height: 40rem;
+  height: 38rem;
+
   background-color: ${({ type }) => {
     switch (type) {
       case "todo":
@@ -196,6 +220,19 @@ const DragArea = styled.div`
   color: white;
   font-family: "Thin";
   font-size: 3rem;
+
+  .container {
+    width: 100%;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    margin: 0.5rem 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const DragItem = styled.div`
@@ -226,6 +263,53 @@ const TextArea = styled.textarea`
   }
 `;
 
+const CircleImage = styled.img`
+  width: 11rem;
+  height: 11rem;
+  background-color: black;
+
+  border-radius: 100%;
+
+  box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.3);
+
+  position: absolute;
+  left: 2rem;
+`;
+
+const TodoInput = styled.div`
+  width: 55rem;
+  height: 3rem;
+  margin: 0.5rem 10rem;
+
+  border-radius: 20px;
+  border: 1px solid ${palette.magenta};
+  box-shadow: 3px 3px 2px 0 rgba(255, 108, 127, 0.5);
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  input {
+    width: 85%;
+    height: 90%;
+    outline: none;
+    border: none;
+    margin: 0 1rem;
+  }
+  button {
+    width: 5rem;
+    height: 2rem;
+    color: ${palette.white};
+    background-color: ${palette.magenta};
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    &:active {
+      box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+    }
+  }
+`;
+
 const D = {
   BeigeBackground,
   RoundShadowBox,
@@ -245,5 +329,7 @@ const D = {
   DragArea,
   DragItem,
   TextArea,
+  CircleImage,
+  TodoInput,
 };
 export default D;

@@ -36,6 +36,7 @@ const MenuIcon = styled.button`
   background-color: ${palette.magenta};
 
   font-size: 2rem;
+  margin: 0 2rem;
   margin-top: 4rem;
 `;
 
