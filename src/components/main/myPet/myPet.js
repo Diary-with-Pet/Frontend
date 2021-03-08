@@ -4,7 +4,6 @@ import MyPetModal from "./myPetModal";
 
 import T from "styles/text";
 import D from "styles/divs";
-import B from "styles/buttons";
 
 const MyPet = () => {
   const [modalVisible, setModalVisivle] = useState(false);
@@ -30,12 +29,18 @@ const MyPet = () => {
         <D.ScrollBox onWheel={(e) => e.stopPropagation()}>
           <MyPetItem />
           <MyPetItem />
-          <D.RadiusBox>
+          <D.RadiusBox
+            right={0.5}
+            left={0.5}
+            top={0.5}
+            bottom={0.5}
+            onClick={() => setModalVisivle(true)}
+          >
             <i className="fas fa-plus"></i>
           </D.RadiusBox>
         </D.ScrollBox>
       </D.InLineBox>
-      {modalVisible && <MyPetModal />}
+      {modalVisible && <MyPetModal setModalVisivle={setModalVisivle} />}
     </div>
   );
 };

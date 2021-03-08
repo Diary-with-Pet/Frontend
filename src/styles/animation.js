@@ -80,6 +80,20 @@ const rubberBand = keyframes`
     transform: scale3d(1, 1, 1)
   }
 }`;
-const Ani = { fadeIn, fadeOut, bounceIn, rubberBand, fadeInOut };
+
+const bigHeight = keyframes`
+100%{
+  height:25rem;
+}
+`;
+
+const Ani = {
+  fadeIn,
+  fadeOut,
+  bounceIn,
+  rubberBand,
+  fadeInOut,
+  bigHeight,
+};
 
 export default Ani;

@@ -2,23 +2,24 @@ import { put, takeLatest, call } from "redux-saga/effects";
 import { mypageTypes, mypageActions } from "../modules/mypage";
 import axios from "axios";
 function* callMypage() {
-  axios.get("").then(yield put(mypageActions.mypageResult({})));
+  //throw Error();
+  // axios.get("").then(yield put(mypageActions.mypageResult({})));
 }
 
 function* mypageRequest(action) {
   console.log("a");
   try {
-    // yield call(callMypage);
+    yield call(callMypage);
     yield put(
-      mypageActions.mypageResult({
+      mypageActions.mypageSuccess({
         email: "chhan1151@naver.com",
         name: "가나다라마바",
         profileImage: "https://picsum.photos/300/500",
         body: "안되면슬픔.",
       })
     );
-  } catch {
-    yield put(mypageActions.mypageRequest("fail"));
+  } catch (e) {
+    yield put(mypageActions.mypageFailure("fail"));
   }
 }
 

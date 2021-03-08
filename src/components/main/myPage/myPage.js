@@ -21,7 +21,6 @@ const MyPage = () => {
 
   useEffect(() => {
     if (store.result == "fail") {
-      console.log(store.reason);
       setErrorMessage(store.reason);
       setError(true);
     }
@@ -41,13 +40,6 @@ const MyPage = () => {
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      {error && (
-        <Alert
-          severity="warnning"
-          message={errorMessage}
-          setVisible={setError}
-        />
-      )}
       {modalVisible && <EditModal setModalVisivle={setModalVisivle} />}
       <D.InLineBox left="0" top="0">
         <T.MagentaThin size="5" left="1">
@@ -76,6 +68,13 @@ const MyPage = () => {
           </D.InLineBox>
         </D.FlexBoxRow>
       </D.InLineBox>
+      {error && (
+        <Alert
+          severity="warnning"
+          message={errorMessage}
+          setVisible={setError}
+        />
+      )}
     </div>
   );
 };

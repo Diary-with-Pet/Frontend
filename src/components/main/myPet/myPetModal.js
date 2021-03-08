@@ -4,8 +4,7 @@ import Alert from "api/Alert";
 import T from "styles/text";
 import D from "styles/divs";
 
-const MyPetModal = () => {
-  const [modalVisible, setModalVisivle] = useState(false);
+const MyPetModal = ({ setModalVisivle }) => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -19,7 +18,7 @@ const MyPetModal = () => {
         />
       )}
       <D.BlackOverlay onClick={(e) => setModalVisivle(false)} />
-      <D.ModalWhiteBox width="30" height="43" padding="2rem"></D.ModalWhiteBox>
+      <D.ModalWhiteBox width="60" height="43" padding="2rem"></D.ModalWhiteBox>
     </>
   );
 };

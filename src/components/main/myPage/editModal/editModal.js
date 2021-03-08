@@ -23,6 +23,7 @@ const EditModal = ({ setModalVisivle }) => {
       case "NAME":
         return { ...state, name: action.name };
       case "BODY":
+        const body = action.body.replace(/\n/g, "<br/>");
         return { ...state, body: action.body, bodyLength: action.body.length };
       default:
         return { ...state };

@@ -30,17 +30,7 @@ const MyPetItem = () => {
             </T.WhiteLight>
           </D.FlexBoxRow>
           <T.WhiteLight size={1}>태어난 날짜</T.WhiteLight>
-          <T.WhiteThin
-            size={1}
-            top={1}
-            style={{
-              width: "12rem",
-              height: "5rem",
-              overflowY: "scroll",
-            }}
-          >
-            기타 사항
-          </T.WhiteThin>
+          <T.WhiteThin className="container" size={1} top={1}></T.WhiteThin>
         </D.InLineBox>
       </D.FlexBoxRow>
       <D.FlexBoxRow

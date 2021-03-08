@@ -1,12 +1,14 @@
 const MYPAGE_REQUEST = "MYPAGE_REQUEST";
-const MYPAGE_RESULT = "MYPAGE_RESULT";
+const MYPAGE_SUCCESS = "MYPAGE_SUCCESS";
+const MYPAGE_FAILURE = "MYPAGE_FAILURE";
 
 const EDIT_REQUEST = "EDIT_REQUEST";
 const EDIT_SUCCESS = "EDIT_SUCCESS";
 const EDIT_FAILURE = "EDIT_FAILURE";
 
 const mypageRequest = () => ({ type: MYPAGE_REQUEST });
-const mypageResult = (data) => ({ type: MYPAGE_RESULT, data });
+const mypageSuccess = (data) => ({ type: MYPAGE_SUCCESS, data });
+const mypageFailure = (reason) => ({ type: MYPAGE_FAILURE, reason });
 
 const editRequest = (data) => ({ type: EDIT_REQUEST, data });
 const editSuccess = (data) => ({ type: EDIT_SUCCESS, data });
@@ -20,7 +22,9 @@ const initalState = {
 };
 const mypageReducer = (state = initalState, action) => {
   switch (action.type) {
-    case MYPAGE_RESULT:
+    case MYPAGE_FAILURE:
+      return { result: "fail", reason: action.reason };
+    case MYPAGE_SUCCESS:
       return action.data;
     case EDIT_REQUEST:
       return { ...state, data: action.data };
@@ -39,7 +43,8 @@ export default mypageReducer;
 
 export const mypageTypes = {
   MYPAGE_REQUEST,
-  MYPAGE_RESULT,
+  MYPAGE_FAILURE,
+  MYPAGE_SUCCESS,
   EDIT_REQUEST,
   EDIT_SUCCESS,
   EDIT_FAILURE,
@@ -47,7 +52,8 @@ export const mypageTypes = {
 
 export const mypageActions = {
   mypageRequest,
-  mypageResult,
+  mypageSuccess,
+  mypageFailure,
   editRequest,
   editSuccess,
   editFailure,

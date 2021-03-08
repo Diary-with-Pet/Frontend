@@ -3,6 +3,7 @@ import { SideMenu } from "components/main/sideMenu";
 import { MyPage } from "components/main/myPage";
 import { MyPet } from "components/main/myPet";
 import { TodoList } from "components/main/todoList";
+import { DiaryList } from "components/main/diaryList";
 import D from "styles/divs";
 
 const Main = () => {
@@ -31,7 +32,7 @@ const Main = () => {
         <MyPage />
         <MyPet />
         <TodoList />
-        <MyPage />
+        <DiaryList />
         <MyPage />
       </div>
     </D.MainContainer>

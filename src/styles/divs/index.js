@@ -186,12 +186,29 @@ const RadiusBox = styled.div`
 
 const PetContainer = styled(RadiusBox)`
   width: 35rem;
+  height: 15rem;
   background-color: ${palette.pink};
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
   display: flex;
   position: relative;
   &::-webkit-scrollbar {
     display: none;
+  }
+  .container {
+    width: 15rem;
+    height: 5rem;
+    overflow-y: hidden;
+    word-break: break-all;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &:hover {
+    animation: ${Ani.bigHeight} 0.1s 0s 1 running forwards;
+    .container {
+      height: 15rem;
+      overflow-y: scroll;
+    }
   }
 `;
 
@@ -310,6 +327,15 @@ const TodoInput = styled.div`
   }
 `;
 
+const ListItem = styled.div`
+  width: 60rem;
+  height: 5rem;
+  border: 3px solid ${palette.magenta};
+
+  border-radius: 10px;
+  margin-top: 1rem;
+`;
+
 const D = {
   BeigeBackground,
   RoundShadowBox,
@@ -331,5 +357,6 @@ const D = {
   TextArea,
   CircleImage,
   TodoInput,
+  ListItem,
 };
 export default D;
