@@ -10,24 +10,21 @@ const mypageRequest = () => ({ type: MYPAGE_REQUEST });
 const mypageSuccess = (data) => ({ type: MYPAGE_SUCCESS, data });
 const mypageFailure = (reason) => ({ type: MYPAGE_FAILURE, reason });
 
-const editRequest = (data) => ({ type: EDIT_REQUEST, data });
+const editRequest = (data, id) => ({ type: EDIT_REQUEST, data, id });
 const editSuccess = (data) => ({ type: EDIT_SUCCESS, data });
 const editFailure = (reason) => ({ type: EDIT_FAILURE, reason });
 
-const initalState = {
-  name: "dlwldbs",
-  email: "abc@def.ghi",
-  profileImage: "https://picsum.photos/300/500",
-  body: "",
-};
+const initalState = {};
 const mypageReducer = (state = initalState, action) => {
   switch (action.type) {
+    case MYPAGE_REQUEST:
+      return { action };
     case MYPAGE_FAILURE:
       return { result: "fail", reason: action.reason };
     case MYPAGE_SUCCESS:
       return action.data;
     case EDIT_REQUEST:
-      return { ...state, data: action.data };
+      return { ...state, data: action.data, id: action.id };
     case EDIT_SUCCESS:
       const result = action.data;
       result[result] = "success";

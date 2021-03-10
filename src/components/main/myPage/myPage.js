@@ -46,10 +46,10 @@ const MyPage = () => {
           MY PAGE
         </T.MagentaThin>
         <D.FlexBoxRow left="5" top="1">
-          <D.ProfileImage src={store.profileImage} />
+          <D.ProfileImage src={store.profile_image} />
           <D.InLineBox left="2" top="0">
             <D.FlexBoxRow>
-              <T.MagentaLight size="3">{store.name}</T.MagentaLight>
+              <T.MagentaLight size="3">{store.username}</T.MagentaLight>
               <B.IconButton
                 top="1"
                 size="1.5"

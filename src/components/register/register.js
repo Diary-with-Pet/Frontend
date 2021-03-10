@@ -18,7 +18,7 @@ const Register = () => {
   const history = useHistory();
   useEffect(() => {
     if (store.result === "success") {
-      history.push("/main");
+      history.push("/login");
     } else if (store.result === "fail") {
       setErrorMessage(store.reason);
       setError(true);
@@ -43,10 +43,10 @@ const Register = () => {
       case "PASSWORD":
         return { ...state, password: action.password };
       case "PASSWORDCONFIRM":
+        console.log(action);
         return {
           ...state,
           passwordConfirm: action.passwordConfirm,
-          isRightPassword: action.password === action.isRightPassword,
         };
       case "IMAGEPATH":
         imageReader(action.imagePath);
@@ -71,12 +71,12 @@ const Register = () => {
     passwordConfirm: "",
     image: "",
     imagePath: "",
-    isRightPassword: true,
   });
 
   const setNullError = (name) => `${name}은(는) 비워둘 수 없습니다`;
 
   const onRegister = () => {
+    console.log(data.password !== data.passwordConfirm);
     if (data.name.length <= 0) {
       setErrorMessage(setNullError("이름"));
       setError(true);
@@ -89,12 +89,17 @@ const Register = () => {
     } else if (data.password.length <= 0) {
       setErrorMessage(setNullError("비밀번호"));
       setError(true);
-    } else if (!data.isRightPassword) {
+    } else if (data.password !== data.passwordConfirm) {
       setErrorMessage("비밀번호가 일치하지 않습니다");
       setError(true);
+    } else {
+      const formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("username", data.name);
+      formData.append("password", data.password);
+      formData.append("profile_image", data.imagePath);
+      registerDispatch(registerActions.registerRequest(formData));
     }
-
-    registerDispatch(registerActions.registerRequest(data));
   };
 
   return (

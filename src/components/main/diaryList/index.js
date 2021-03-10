@@ -1,1 +1,1 @@
-export { default as DiaryList } from "./diaryList";
+export { default as DiaryContainer } from "./diaryContainer";

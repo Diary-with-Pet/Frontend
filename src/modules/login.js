@@ -3,7 +3,7 @@ const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 const LOGIN_FAILURE = "LOGIN_FAILURE";
 
 const loginRequest = (data) => ({ type: LOGIN_REQUEST, data });
-const loginSuccess = () => ({ type: LOGIN_SUCCESS });
+const loginSuccess = (token) => ({ type: LOGIN_SUCCESS, token });
 const loginFailure = (reason) => ({ type: LOGIN_FAILURE, reason });
 
 const loginReducer = (state = {}, action) => {
@@ -11,7 +11,7 @@ const loginReducer = (state = {}, action) => {
     case LOGIN_REQUEST:
       return { data: action.data };
     case LOGIN_SUCCESS:
-      return { result: "success" };
+      return { result: "success", token: action.token };
     case LOGIN_FAILURE:
       return { result: "fail", reason: action.reason };
     default:

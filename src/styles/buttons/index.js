@@ -51,6 +51,8 @@ const IconButton = styled.i`
         return palette.pigPink;
       case "beige":
         return palette.beige;
+      case "magenta":
+        return palette.magenta;
       default:
         return;
     }

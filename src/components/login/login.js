@@ -25,6 +25,7 @@ const Login = () => {
 
   useEffect(() => {
     if (store.result === "success") {
+      localStorage.setItem("accessToken", store.token);
       history.push("/main");
     } else if (store.result === "fail") {
       setErrorMessage(store.reason);
@@ -77,6 +78,9 @@ const Login = () => {
           placeholder="비밀번호"
           type="password"
           value={password}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") onLogin();
+          }}
           onChange={(e) => setPassword(e.target.value)}
         />
         <B.RoundBtn width="20" height="3" top="3" onClick={onLogin}>

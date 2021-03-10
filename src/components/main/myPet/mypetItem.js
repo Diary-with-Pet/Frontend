@@ -3,7 +3,7 @@ import React from "react";
 import T from "styles/text";
 import D from "styles/divs";
 
-const MyPetItem = () => {
+const MyPetItem = ({ setModalVisivle }) => {
   return (
     <D.PetContainer>
       <D.FlexBoxRow>
@@ -36,7 +36,11 @@ const MyPetItem = () => {
       <D.FlexBoxRow
         style={{ position: "absolute", bottom: "1rem", right: "1rem" }}
       >
-        <T.WhiteLight size={0.5} right={1}>
+        <T.WhiteLight
+          size={0.5}
+          right={1}
+          onClick={() => setModalVisivle("수정")}
+        >
           수정하기
         </T.WhiteLight>
         <T.MagentaLight size={0.5}>삭제하기</T.MagentaLight>

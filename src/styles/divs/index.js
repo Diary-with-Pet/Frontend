@@ -75,7 +75,8 @@ const AlertBox = styled.div`
 const SideBar = styled.div`
   position: sticky;
   top: 0;
-  width: 7rem;
+  left: 0;
+  width: 5rem;
   height: 100vh;
   background-color: ${palette.magenta};
   box-shadow: 2px 1px 4px 0px rgba(0, 0, 0, 0.5);
@@ -88,6 +89,8 @@ const SideBar = styled.div`
 
   box-sizing: border-box;
   padding-bottom: 50px;
+
+  z-index: 999;
 `;
 
 const MainContainer = styled.div`
@@ -109,12 +112,21 @@ const FlexBoxRow = styled(Box)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and(max-width:1200) {
+    margin: 0;
+    align-items: left;
+  }
 `;
 const FlexBoxColumn = styled(Box)`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media screen and(max-width:1200) {
+    margin: 0;
+    align-items: left;
+  }
 `;
 const ModalWhiteBox = styled(Box)`
   position: fixed;
@@ -294,6 +306,8 @@ const CircleImage = styled.img`
 `;
 
 const TodoInput = styled.div`
+  font-family: "Thin";
+
   width: 55rem;
   height: 3rem;
   margin: 0.5rem 10rem;
@@ -334,10 +348,40 @@ const ListItem = styled.div`
 
   border-radius: 10px;
   margin-top: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  input {
+    width: 0;
+    height: 0;
+  }
 `;
 
+const Frame = styled.iframe`
+  width: 70rem;
+  height: 40rem;
+
+  outline: none;
+  border: none;
+
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+
+    border-radius: 20px;
+    background: #d7d7d7;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: ${palette.magenta};
+    border-radius: 20px;
+  }
+`;
 const D = {
   BeigeBackground,
+  Box,
   RoundShadowBox,
   ImageInputBox,
   AlertBox,
@@ -358,5 +402,6 @@ const D = {
   CircleImage,
   TodoInput,
   ListItem,
+  Frame,
 };
 export default D;

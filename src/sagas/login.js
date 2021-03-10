@@ -1,15 +1,16 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { loginTypes, loginActions } from "../modules/login";
+import { loginTypes, loginActions } from "modules/login";
+import axios from "axios";
 
-const callLogin = (data) => {
-  throw Error;
-  localStorage.setItem("accessToken", "");
-};
 function* loginRequest(action) {
   console.log("login");
   try {
-    yield call(callLogin, action.data);
-    yield put(loginActions.loginSuccess());
+    const client = axios.create({
+      baseURL: process.env.REACT_APP_BASE_URL,
+    });
+    const { data } = yield call([client, "post"], "user/login/", action.data);
+
+    yield put(loginActions.loginSuccess(data.token));
   } catch (e) {
     yield put(loginActions.loginFailure());
   }

@@ -1,11 +1,17 @@
 import axios from "axios";
 
-const getRequest = axios.create({
-  baseURL: "",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  },
-});
+export const getAccess = () =>
+  axios.create({
+    baseURL: process.env.REACT_APP_BASE_URL,
+    headers: {
+      Authorization: `jwt ${localStorage.getItem("accessToken")}`,
+    },
+  });
 
-export default getRequest;
+export const getRefresh = () =>
+  axios.create({
+    baseURL: process.env.REACT_APP_BASE_URL,
+    headers: {
+      Authorization: `jwt ${localStorage.getItem("refreshToken")}`,
+    },
+  });

@@ -23,7 +23,6 @@ const EditModal = ({ setModalVisivle }) => {
       case "NAME":
         return { ...state, name: action.name };
       case "BODY":
-        const body = action.body.replace(/\n/g, "<br/>");
         return { ...state, body: action.body, bodyLength: action.body.length };
       default:
         return { ...state };
@@ -35,11 +34,11 @@ const EditModal = ({ setModalVisivle }) => {
   }, []);
 
   const [data, dispatch] = useReducer(reducer, {
-    image: store.profileImage,
-    imagePath: store.profileImage,
-    name: store.name,
-    body: store.body,
-    bodyLength: store.body ? store.body.length : 0,
+    image: store.profile_image,
+    imagePath: store.profile_image,
+    name: store.username,
+    body: store.profile || "",
+    bodyLength: store.profile ? store.profile.length : 0,
   });
 
   function imageReader(e) {
@@ -94,20 +93,28 @@ const EditModal = ({ setModalVisivle }) => {
           <I.BorderArea
             height="15"
             top="1"
+            type="text"
             value={data.body}
             onChange={bodyInputDHandle}
           />
           <D.FlexBoxRow width="25">
             <D.FlexBoxRow width="5" style={{ margin: "0" }}>
-              <CircleProgress max="800" cur={data.bodyLength} />
-              <p style={{ margin: "1.5rem 0" }}>{data.bodyLength}/800</p>
+              <CircleProgress max="50" cur={data.bodyLength} />
+              <p style={{ margin: "1.5rem 0" }}>{data.bodyLength}/50</p>
             </D.FlexBoxRow>
             <B.RoundBtn
               top="1"
               width="12"
               height="3"
               onClick={() => {
-                modalDispatch(mypageActions.editRequest(data));
+                const body = data.body.replace(/\n/g, "<br/>");
+                const formData = new FormData();
+                console.log(data.imagePath);
+                formData.append("email", store.email);
+                formData.append("username", data.name);
+                formData.append("profile_image", data.imagePath);
+                formData.append("profile", body);
+                modalDispatch(mypageActions.editRequest(formData, store.id));
                 setModalVisivle(false);
               }}
             >

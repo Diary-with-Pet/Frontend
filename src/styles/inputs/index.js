@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import palette from "../palette";
+import img from "../arrowImage.jpg";
 
 const LoginInput = styled.input`
   width: ${({ width }) => (width ? width + "rem" : "100%")};
@@ -55,5 +56,79 @@ const BorderArea = styled.textarea`
   box-shadow: 1px 1px 2px 1px ${palette.magenta};
 `;
 
-const I = { LoginInput, ImageInput, BorderArea };
+const MypetInput = styled.input`
+  border: 3px solid ${palette.magenta};
+  width: 100%;
+  height: 4rem;
+  font-size: 1rem;
+
+  box-sizing: border-box;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: "Light";
+  border-radius: 10px;
+  border: 1px solid ${palette.magenta};
+  box-shadow: 1px 1px 2px 1px ${palette.magenta};
+
+  outline: none;
+`;
+const MypetSelector = styled.select`
+  width: 100%;
+  height: 4rem;
+  font-size: 1rem;
+
+  box-sizing: border-box;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: "Light";
+  border-radius: 10px;
+  border: 1px solid ${palette.magenta};
+  box-shadow: 1px 1px 2px 1px ${palette.magenta};
+
+  -webkit-appearance: none;
+  background: url(img);
+
+  outline: none;
+`;
+
+const BottomBorderInput = styled.input`
+  width: 20rem;
+  height: 3rem;
+
+  font-family: "Light";
+  font-size: 2.5rem;
+  text-align: center;
+
+  outline: none;
+  border: none;
+  border-bottom: 3px solid ${palette.magenta};
+
+  margin-top: 3rem;
+`;
+
+const CheckBox = styled.label`
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 2rem;
+  border: 3px solid ${palette.magenta};
+  border-radius: 5px;
+  color: ${palette.white};
+  ${({ isChecked }) =>
+    isChecked && {
+      backgroundColor: palette.magenta,
+    }}
+
+  text-align:center;
+`;
+const I = {
+  LoginInput,
+  ImageInput,
+  BorderArea,
+  MypetInput,
+  MypetSelector,
+  BottomBorderInput,
+  CheckBox,
+};
 export default I;

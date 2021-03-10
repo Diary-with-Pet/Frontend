@@ -1,7 +1,9 @@
 import React from "react";
 import D from "styles/divs";
 import B from "styles/buttons";
+import { useHistory } from "react-router";
 const SideMenu = ({ moveTo, focus }) => {
+  const history = useHistory();
   return (
     <D.SideBar>
       <B.MenuIcon onClick={() => moveTo(0)} isFocus={focus === 0}>
@@ -18,6 +20,14 @@ const SideMenu = ({ moveTo, focus }) => {
       </B.MenuIcon>
       <B.MenuIcon onClick={() => moveTo(4)} isFocus={focus === 4}>
         <i className="fas fa-pen-nib"></i>
+      </B.MenuIcon>
+      <B.MenuIcon
+        onClick={() => {
+          localStorage.removeItem("accessToken");
+          history.push("/login");
+        }}
+      >
+        <i className="fas fa-sign-out-alt"></i>
       </B.MenuIcon>
     </D.SideBar>
   );

@@ -1,43 +1,27 @@
 import { put, takeLatest, call } from "redux-saga/effects";
-import { mypageTypes, mypageActions } from "../modules/mypage";
-import axios from "axios";
-function* callMypage() {
-  //throw Error();
-  // axios.get("").then(yield put(mypageActions.mypageResult({})));
-}
+import { mypageTypes, mypageActions } from "modules/mypage";
+import { getAccess } from "api/getRequest";
 
-function* mypageRequest(action) {
-  console.log("a");
+//getAccess.get("/mypage/list")
+function* mypageRequest() {
   try {
-    yield call(callMypage);
-    yield put(
-      mypageActions.mypageSuccess({
-        email: "chhan1151@naver.com",
-        name: "가나다라마바",
-        profileImage: "https://picsum.photos/300/500",
-        body: "안되면슬픔.",
-      })
-    );
+    const { data } = yield call([getAccess(), "get"], "/mypage/list");
+    data[0]["profile"] = "";
+    yield put(mypageActions.mypageSuccess(data[0]));
   } catch (e) {
     yield put(mypageActions.mypageFailure("fail"));
   }
 }
 
-function* callEdit(data) {
-  console.log(data);
-  // yield put(
-  //   mypageActions.editSuccess({
-  //     email: "chhan1151@naver.com",
-  //     name: "수정됨",
-  //     profileImage: "https://picsum.photos/300/500",
-  //     body: "안되면슬픔.",
-  //   })
-  // );
-  throw Error();
-}
 function* editRequest(action) {
   try {
-    yield call(callEdit, action.data);
+    console.log(action);
+    const { data } = yield call(
+      [getAccess(), "patch"],
+      `/mypage/update/${action.id}/`,
+      action.data
+    );
+    console.log(data);
   } catch (e) {
     yield put(mypageActions.editFailure("그냥"));
   }

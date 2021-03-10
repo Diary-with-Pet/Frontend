@@ -1,8 +1,16 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { registerTypes, registerActions } from "../modules/register";
+import axios from "axios";
 
 const callRegister = (data) => {
-  throw Error;
+  console.log(data);
+  const client = axios.create({
+    baseURL: process.env.REACT_APP_BASE_URL,
+  });
+  client
+    .post("/user/register/", data)
+    .then(console.log)
+    .catch((e) => console.log(e.response.data));
 };
 function* REGISTER_REQUEST(action) {
   try {

@@ -1,37 +1,26 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import TodoItem from "./todoItem";
+
+import { useSelector, useDispatch } from "react-redux";
 
 import T from "styles/text";
 import D from "styles/divs";
 
-const task = [
-  {
-    id: 0,
-    title: "title수정",
-    content: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    classification: 3,
-  },
-  {
-    id: 1,
-    title: "title2",
-    content: "bbbbbbbbbbbbbbbbbbbb",
-    classification: 2,
-  },
-  {
-    id: 2,
-    title: "cnrkcnrl",
-    content: "cccccccccccccccccccccc",
-    classification: 1,
-  },
-  {
-    id: 3,
-    title: "cnrkcnrl",
-    content: "cccccccccccccccccccccc",
-    classification: 1,
-  },
-];
+import { todoActions } from "modules/todo";
+
 const TodoList = () => {
-  const [list, setList] = useState(task);
+  const store = useSelector((state) => state.todoReducer);
+  const dispatch = useDispatch();
+  const [list, setList] = useState(store.list);
+
+  useEffect(() => {
+    dispatch(todoActions.requestList());
+  }, []);
+
+  useEffect(() => {
+    setList(store.list);
+  }, [store]);
+
   const todo = useMemo(() => {
     return list.filter((l) => l.classification === 1);
   }, [list]);
@@ -42,18 +31,13 @@ const TodoList = () => {
     return list.filter((l) => l.classification === 3);
   }, [list]);
 
-  const onDragStart = (e) => {
-    e.dataTransfer.setData("text/plain", e.currentTarget.id);
-    e.dataTransfer.effectAllowed = "move";
-  };
-
   const onDragEnter = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
   };
   const onDragLeave = (e) => {
-    let currentTarget = e.currentTarget;
-    let newTarget = e.relatedTarget;
+    const currentTarget = e.currentTarget;
+    const newTarget = e.relatedTarget;
     if (newTarget.parentNode === currentTarget || newTarget === currentTarget)
       return;
     e.preventDefault();
@@ -65,13 +49,11 @@ const TodoList = () => {
   const onDrop = (e, value) => {
     e.preventDefault();
     e.currentTarget.classList.remove("dragged-over");
-    let data = e.dataTransfer.getData("text/plain");
-    console.log(data);
-    let updated = list.map((l) => {
-      if (l.id == data) l.classification = value;
+    const data = e.dataTransfer.getData("text");
+    const updated = list.map((l) => {
+      if (l.id === parseInt(data)) l.classification = value;
       return l;
     });
-    console.log(data);
     setList(updated);
   };
 
@@ -82,7 +64,7 @@ const TodoList = () => {
           TO DO LIST
         </T.MagentaThin>
       </D.InLineBox>
-      <div style={{ marginLeft: "10rem" }}>
+      <D.FlexBoxColumn>
         <D.TodoInput>
           <input />
           <button>등록</button>
@@ -131,7 +113,7 @@ const TodoList = () => {
             </div>
           </D.DragArea>
         </D.FlexBoxRow>
-      </div>
+      </D.FlexBoxColumn>
     </div>
   );
 };

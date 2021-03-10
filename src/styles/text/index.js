@@ -43,6 +43,11 @@ const MagentaLight = styled(Text)`
   font-family: "Light";
   color: ${palette.magenta};
 `;
+const MagentaBold = styled(Text)`
+  font-family: "Bold";
+  color: ${palette.magenta};
+`;
+
 const PigPinkLight = styled(Text)`
   font-family: "Light";
   color: ${palette.pigPink};
@@ -65,6 +70,7 @@ const T = {
   WhiteThin,
   MagentaThin,
   MagentaLight,
+  MagentaBold,
   PigPinkLight,
   BlakcLight,
   BlackThin,

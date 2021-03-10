@@ -3,8 +3,10 @@ import { SideMenu } from "components/main/sideMenu";
 import { MyPage } from "components/main/myPage";
 import { MyPet } from "components/main/myPet";
 import { TodoList } from "components/main/todoList";
-import { DiaryList } from "components/main/diaryList";
+import { DiaryContainer } from "components/main/diaryList";
+
 import D from "styles/divs";
+import { WriteDiary } from "./writeDiary";
 
 const Main = () => {
   const [prePos, setPrePos] = useState(0);
@@ -22,7 +24,6 @@ const Main = () => {
       behavior: "smooth",
     });
     setPrePos(num);
-    console.log(num);
     delta = 0;
   };
   return (
@@ -32,8 +33,8 @@ const Main = () => {
         <MyPage />
         <MyPet />
         <TodoList />
-        <DiaryList />
-        <MyPage />
+        <DiaryContainer />
+        <WriteDiary />
       </div>
     </D.MainContainer>
   );

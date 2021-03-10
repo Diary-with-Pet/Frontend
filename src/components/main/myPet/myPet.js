@@ -27,20 +27,24 @@ const MyPet = () => {
           MY PET
         </T.MagentaThin>
         <D.ScrollBox onWheel={(e) => e.stopPropagation()}>
-          <MyPetItem />
-          <MyPetItem />
+          <MyPetItem setModalVisivle={setModalVisivle} />
           <D.RadiusBox
             right={0.5}
             left={0.5}
             top={0.5}
             bottom={0.5}
-            onClick={() => setModalVisivle(true)}
+            onClick={() => setModalVisivle("생성")}
           >
             <i className="fas fa-plus"></i>
           </D.RadiusBox>
         </D.ScrollBox>
       </D.InLineBox>
-      {modalVisible && <MyPetModal setModalVisivle={setModalVisivle} />}
+      {modalVisible && (
+        <MyPetModal
+          modalVisible={modalVisible}
+          setModalVisivle={setModalVisivle}
+        />
+      )}
     </div>
   );
 };
