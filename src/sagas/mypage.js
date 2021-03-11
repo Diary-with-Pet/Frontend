@@ -6,7 +6,6 @@ import { getAccess } from "api/getRequest";
 function* mypageRequest() {
   try {
     const { data } = yield call([getAccess(), "get"], "/mypage/list");
-    data[0]["profile"] = "";
     yield put(mypageActions.mypageSuccess(data[0]));
   } catch (e) {
     yield put(mypageActions.mypageFailure("fail"));
@@ -15,15 +14,15 @@ function* mypageRequest() {
 
 function* editRequest(action) {
   try {
-    console.log(action);
     const { data } = yield call(
       [getAccess(), "patch"],
       `/mypage/update/${action.id}/`,
       action.data
     );
-    console.log(data);
+    yield put(mypageActions.editSuccess(data));
+    yield put(mypageActions.mypageRequest());
   } catch (e) {
-    yield put(mypageActions.editFailure("그냥"));
+    yield put(mypageActions.editFailure(e));
   }
 }
 

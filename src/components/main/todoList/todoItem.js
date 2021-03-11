@@ -16,7 +16,8 @@ const TodoItem = ({ item }) => {
   const [readOnly, setReadOnly] = useState(true);
   const focus = useRef();
   const onDragStart = (e) => {
-    e.dataTransfer.setData("text", e.currentTarget.id);
+    console.log(e);
+    e.dataTransfer.setData("data", e.currentTarget.id);
     e.dataTransfer.effectAllowed = "move";
   };
 
@@ -25,17 +26,16 @@ const TodoItem = ({ item }) => {
   };
 
   const editItem = () => {
-    setReadOnly(!readOnly);
     if (!readOnly) {
       dispatch(
-        todoActions.editRequest({
-          id: item.id,
+        todoActions.editRequest(item.id, {
           content: text,
         })
       );
     } else {
       focus.current.focus();
     }
+    setReadOnly(!readOnly);
   };
 
   return (

@@ -1,18 +1,18 @@
-const REQUEST_LIST = "REQUEST_LIST";
-const REQUEST_LIST_SUCCESS = "REQUEST_LIST_SUCCESS";
-const REQUEST_LIST_FAILURE = "REQUEST_LIST_FAILURE";
+const REQUEST_LIST = "REQUEST_LIST_TODO";
+const REQUEST_LIST_SUCCESS = "REQUEST_LIST_SUCCESS_TODO";
+const REQUEST_LIST_FAILURE = "REQUEST_LIST_FAILURE_TODO";
 
-const CREATE_REQUEST = "CREATE_REQUEST";
-const CREATE_SUCCESS = "CREATE_SUCCESS";
-const CREATE_FAILURE = "CREATE_FAILURE";
+const CREATE_REQUEST = "CREATE_REQUEST_TODO";
+const CREATE_SUCCESS = "CREATE_SUCCESS_TODO";
+const CREATE_FAILURE = "CREATE_FAILURE_TODO";
 
-const DELETE_REQUEST = "DELETE_REQUEST";
-const DELETE_SUCCESS = "DELETE_SUCCESS";
-const DELETE_FAILURE = "DELETE_FAILURE";
+const DELETE_REQUEST = "DELETE_REQUEST_TODO";
+const DELETE_SUCCESS = "DELETE_SUCCESS_TODO";
+const DELETE_FAILURE = "DELETE_FAILURE_TODO";
 
-const EDIT_REQUEST = "EDIT_REQUEST";
-const EDIT_SUCCESS = "EDIT_SUCCESS";
-const EDIT_FAILURE = "EDIT_FIALURE";
+const EDIT_REQUEST = "EDIT_REQUEST_TODO";
+const EDIT_SUCCESS = "EDIT_SUCCESS_TODO";
+const EDIT_FAILURE = "EDIT_FIALURE_TODO";
 
 const requestList = () => ({ type: REQUEST_LIST });
 const requestSuccess = (data) => ({ type: REQUEST_LIST_SUCCESS, data });
@@ -26,7 +26,7 @@ const deleteRequest = (id) => ({ type: DELETE_REQUEST, id });
 const deleteSuccess = (id) => ({ type: DELETE_SUCCESS, id });
 const deleteFail = (reason) => ({ type: DELETE_FAILURE, reason });
 
-const editRequest = (data) => ({ type: EDIT_REQUEST, data });
+const editRequest = (id, data) => ({ type: EDIT_REQUEST, id, data });
 const editSuccess = (data) => ({ type: EDIT_SUCCESS, data });
 const editFail = (reason) => ({ type: EDIT_FAILURE, reason });
 
@@ -39,7 +39,7 @@ const todoReducer = (state = { list: [] }, action) => {
     case CREATE_REQUEST:
       return { ...state, data: action.data };
     case CREATE_SUCCESS:
-      return { ...state, data: action.data };
+      return { result: "succes", list: [...state.list, action.data] };
     case CREATE_FAILURE:
       return { ...state, reason: action.reason };
     case DELETE_REQUEST:
@@ -63,13 +63,13 @@ const todoReducer = (state = { list: [] }, action) => {
       return {
         ...state,
         data: action.data,
+        id: action.id,
       };
     case EDIT_SUCCESS:
       return {
-        list: state.list.map((item) => {
-          if (item.id === state.data.id) item = state.data;
-          return item;
-        }),
+        list: state.list.map((item) =>
+          item.id === action.data.id ? { ...item, ...action.data } : item
+        ),
       };
     default:
       return state;
@@ -88,6 +88,9 @@ export const todoTypes = {
   EDIT_REQUEST,
   EDIT_SUCCESS,
   EDIT_FAILURE,
+  CREATE_REQUEST,
+  CREATE_SUCCESS,
+  CREATE_FAILURE,
 };
 
 export const todoActions = {
@@ -100,4 +103,7 @@ export const todoActions = {
   editRequest,
   editSuccess,
   editFail,
+  createRequest,
+  createSuccess,
+  createFail,
 };

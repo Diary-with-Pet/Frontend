@@ -2,16 +2,16 @@ import React, { useState, useMemo, useEffect } from "react";
 import TodoItem from "./todoItem";
 
 import { useSelector, useDispatch } from "react-redux";
+import { todoTypes, todoActions } from "modules/todo";
 
 import T from "styles/text";
 import D from "styles/divs";
-
-import { todoActions } from "modules/todo";
 
 const TodoList = () => {
   const store = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
   const [list, setList] = useState(store.list);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     dispatch(todoActions.requestList());
@@ -19,6 +19,7 @@ const TodoList = () => {
 
   useEffect(() => {
     setList(store.list);
+    console.log(list);
   }, [store]);
 
   const todo = useMemo(() => {
@@ -36,10 +37,6 @@ const TodoList = () => {
     e.dataTransfer.dropEffect = "move";
   };
   const onDragLeave = (e) => {
-    const currentTarget = e.currentTarget;
-    const newTarget = e.relatedTarget;
-    if (newTarget.parentNode === currentTarget || newTarget === currentTarget)
-      return;
     e.preventDefault();
   };
   const onDragOver = (e) => {
@@ -49,14 +46,29 @@ const TodoList = () => {
   const onDrop = (e, value) => {
     e.preventDefault();
     e.currentTarget.classList.remove("dragged-over");
-    const data = e.dataTransfer.getData("text");
+    const data = e.dataTransfer.getData("data");
     const updated = list.map((l) => {
-      if (l.id === parseInt(data)) l.classification = value;
+      if (l.id === parseInt(data)) {
+        l.classification = value;
+        dispatch(todoActions.editRequest(l.id, { classification: value }));
+      }
       return l;
     });
+
     setList(updated);
   };
 
+  const onChange = (e) => {
+    setText(e.target.value);
+  };
+  const onSubmit = () => {
+    const data = {
+      content: text,
+      classification: 1,
+    };
+    dispatch(todoActions.createRequest(data));
+    setText("");
+  };
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <D.InLineBox left="20">
@@ -66,8 +78,14 @@ const TodoList = () => {
       </D.InLineBox>
       <D.FlexBoxColumn>
         <D.TodoInput>
-          <input />
-          <button>등록</button>
+          <input
+            value={text}
+            onChange={onChange}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") onSubmit();
+            }}
+          />
+          <button onClick={onSubmit}>등록</button>
         </D.TodoInput>
         <D.FlexBoxRow left="5" top="1" left="10" right="10" width={55}>
           <D.DragArea

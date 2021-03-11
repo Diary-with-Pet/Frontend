@@ -1,30 +1,46 @@
 import { call, takeLatest, put } from "redux-saga/effects";
-import { getRequest } from "api/getRequest";
+import { getAccess } from "api/getRequest";
 
 import { todoTypes, todoActions } from "modules/todo";
 
-function* callList() {
-  //   getRequest.get("/todo");
-  //   yield put(todoActions.requestSuccess());
-}
 function* listRequest() {
   try {
-    yield call(callList);
+    const { data } = yield call([getAccess(), "get"], "/todo");
+    yield put(todoActions.requestSuccess(data));
   } catch (e) {}
 }
 
-function* callDelete(action) {
-  yield put(todoActions.deleteSuccess(action.id));
-}
 function* deleteRequest(action) {
+  console.log(action);
   try {
-    yield call(callDelete, action);
+    yield call([getAccess(), "delete"], `todo/${action.id}`);
+    yield put(todoActions.deleteSuccess(action.id));
   } catch (e) {}
 }
 
-function* callEdit(action) {}
+function* editRequest(action) {
+  console.log(action);
+  try {
+    yield call([getAccess(), "patch"], `/todo/${action.id}/`, action.data);
+    yield put(
+      todoActions.editSuccess({
+        id: action.id,
+        ...action.data,
+      })
+    );
+  } catch (e) {}
+}
+
+function* createRequest(action) {
+  try {
+    yield call([getAccess(), "post"], "/todo/", action.data);
+    yield put(todoActions.createSuccess(action.data));
+  } catch (e) {}
+}
 
 export default function* todoListSaga() {
   yield takeLatest(todoTypes.REQUEST_LIST, listRequest);
   yield takeLatest(todoTypes.DELETE_REQUEST, deleteRequest);
+  yield takeLatest(todoTypes.EDIT_REQUEST, editRequest);
+  yield takeLatest(todoTypes.CREATE_REQUEST, createRequest);
 }

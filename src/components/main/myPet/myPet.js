@@ -7,6 +7,7 @@ import D from "styles/divs";
 
 const MyPet = () => {
   const [modalVisible, setModalVisivle] = useState(false);
+  const [mod, setMod] = useState("craete");
 
   useEffect(() => {
     function LimitWheel(e) {
@@ -27,13 +28,16 @@ const MyPet = () => {
           MY PET
         </T.MagentaThin>
         <D.ScrollBox onWheel={(e) => e.stopPropagation()}>
-          <MyPetItem setModalVisivle={setModalVisivle} />
+          {/* <MyPetItem setModalVisivle={setModalVisivle} setMod={setMod} /> */}
           <D.RadiusBox
             right={0.5}
             left={0.5}
             top={0.5}
             bottom={0.5}
-            onClick={() => setModalVisivle("생성")}
+            onClick={() => {
+              setMod("create");
+              setModalVisivle(true);
+            }}
           >
             <i className="fas fa-plus"></i>
           </D.RadiusBox>
@@ -41,6 +45,7 @@ const MyPet = () => {
       </D.InLineBox>
       {modalVisible && (
         <MyPetModal
+          mod={mod}
           modalVisible={modalVisible}
           setModalVisivle={setModalVisivle}
         />

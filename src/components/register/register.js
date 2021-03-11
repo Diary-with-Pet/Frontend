@@ -34,7 +34,7 @@ const Register = () => {
     };
   };
 
-  const reducer = (state = data, action) => {
+  const reducer = (state = {}, action) => {
     switch (action.type) {
       case "NAME":
         return { ...state, name: action.name };
@@ -43,7 +43,6 @@ const Register = () => {
       case "PASSWORD":
         return { ...state, password: action.password };
       case "PASSWORDCONFIRM":
-        console.log(action);
         return {
           ...state,
           passwordConfirm: action.passwordConfirm,

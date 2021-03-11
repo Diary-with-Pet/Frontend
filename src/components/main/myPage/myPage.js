@@ -24,6 +24,7 @@ const MyPage = () => {
       setErrorMessage(store.reason);
       setError(true);
     }
+    console.log(store);
   }, [store]);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const MyPage = () => {
             </D.FlexBoxRow>
             <T.PigPinkLight size="1.5">{store.email}</T.PigPinkLight>
             <T.BlakcLight size="1.5" top="1">
-              {store.body}
+              {store.profile}
             </T.BlakcLight>
           </D.InLineBox>
         </D.FlexBoxRow>

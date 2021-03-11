@@ -23,6 +23,7 @@ const EditModal = ({ setModalVisivle }) => {
       case "NAME":
         return { ...state, name: action.name };
       case "BODY":
+        if (action.body.length > 50) return { ...state };
         return { ...state, body: action.body, bodyLength: action.body.length };
       default:
         return { ...state };
@@ -112,7 +113,8 @@ const EditModal = ({ setModalVisivle }) => {
                 console.log(data.imagePath);
                 formData.append("email", store.email);
                 formData.append("username", data.name);
-                formData.append("profile_image", data.imagePath);
+                if (store.profile_image != data.imagePath)
+                  formData.append("profile_image", data.imagePath);
                 formData.append("profile", body);
                 modalDispatch(mypageActions.editRequest(formData, store.id));
                 setModalVisivle(false);

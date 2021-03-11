@@ -3,7 +3,6 @@ import { registerTypes, registerActions } from "../modules/register";
 import axios from "axios";
 
 const callRegister = (data) => {
-  console.log(data);
   const client = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
   });
