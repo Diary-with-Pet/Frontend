@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import T from "styles/text";
 import D from "styles/divs";
 import DiaryList from "./diaryList";
 import DiaryDetail from "./diaryDetail";
-import { useSelector } from "react-redux";
+import Alert from "api/Alert";
+
+import { diaryActions } from "modules/diary";
+
+import { useSelector, useDispatch } from "react-redux";
 
 const DiaryContainer = () => {
   const store = useSelector((state) => state.diaryReducer);
-  console.log(store.id);
+  const dispatch = useDispatch();
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    dispatch(diaryActions.requestList());
+  }, []);
+
+  useEffect(() => {
+    if (store.reason) {
+      setErrorMessage(store.reason);
+      setError(true);
+    }
+  }, [store]);
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
@@ -18,6 +35,13 @@ const DiaryContainer = () => {
         </T.MagentaThin>
         {store.mod === "list" ? <DiaryList /> : <DiaryDetail />}
       </D.InLineBox>
+      {error && (
+        <Alert
+          severity="warnning"
+          message={errorMessage}
+          setVisible={setError}
+        />
+      )}
     </div>
   );
 };

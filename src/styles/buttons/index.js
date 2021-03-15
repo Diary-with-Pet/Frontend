@@ -78,5 +78,17 @@ const IconButton = styled.i`
     }};
   }
 `;
-const B = { RoundBtn, BorderRoundBtn, MenuIcon, IconButton };
+
+const ArrowBtn = styled.button`
+  width: 5rem;
+  height: 3rem;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: "bold";
+  font-size: 2rem;
+  background-color: ${palette.magenta};
+  color: ${palette.white};
+`;
+const B = { RoundBtn, BorderRoundBtn, MenuIcon, IconButton, ArrowBtn };
 export default B;

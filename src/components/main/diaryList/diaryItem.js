@@ -5,7 +5,7 @@ import D from "styles/divs";
 import T from "styles/text";
 
 import { useDispatch } from "react-redux";
-import { diaryActions } from "modules/diaryContainer";
+import { diaryActions } from "modules/diary";
 
 const DiaryItem = ({ id, isSelected }) => {
   const [check, isChecked] = useState(isSelected);
@@ -26,7 +26,9 @@ const DiaryItem = ({ id, isSelected }) => {
       <T.MagentaBold
         size={2}
         style={{ width: "30rem", textAlign: "left" }}
-        onClick={() => dispatch(diaryActions.modToDetail(id))}
+        onClick={() => {
+          dispatch(diaryActions.modToDetail(id));
+        }}
       >
         Title
       </T.MagentaBold>

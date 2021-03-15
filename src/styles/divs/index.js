@@ -28,6 +28,12 @@ const ShadowBox = styled(Box)`
   flex-wrap: wrap;
   overflow: hidden;
   overflow-y: scroll;
+
+  font-family: "light";
+  font-size: 2rem;
+  img {
+    width: 100%;
+  }
 `;
 const RoundShadowBox = styled(Box)`
   opacity: 0;
@@ -369,26 +375,6 @@ const ListItem = styled.div`
   }
 `;
 
-const Frame = styled.iframe`
-  width: 70rem;
-  height: 40rem;
-
-  outline: none;
-  border: none;
-
-  overflow: auto;
-
-  &::-webkit-scrollbar {
-    width: 0.5rem;
-
-    border-radius: 20px;
-    background: #d7d7d7;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: ${palette.magenta};
-    border-radius: 20px;
-  }
-`;
 const D = {
   BeigeBackground,
   Box,
@@ -412,7 +398,6 @@ const D = {
   CircleImage,
   TodoInput,
   ListItem,
-  Frame,
   ShadowBox,
 };
 export default D;

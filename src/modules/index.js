@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import loginReducer from "./login";
 import registerReducer from "./register";
 import mypageReducer from "./mypage";
-import diaryReducer from "./diaryContainer";
+import diaryReducer from "./diary";
 import todoReducer from "./todo";
 import mypetReducer from "./mypet";
 const rootReducer = combineReducers({

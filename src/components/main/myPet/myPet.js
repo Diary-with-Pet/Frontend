@@ -42,7 +42,7 @@ const MyPet = () => {
   }, [store]);
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100vh", width: "90vw" }}>
       <D.InLineBox left="0" top="0">
         <T.MagentaThin size="5" left="1">
           MY PET
@@ -57,6 +57,18 @@ const MyPet = () => {
                 setMod={setMod}
               />
             ))}
+          <D.RadiusBox
+            right={0.5}
+            left={0.5}
+            top={0.5}
+            bottom={0.5}
+            onClick={() => {
+              setMod("create");
+              setModalVisivle(true);
+            }}
+          >
+            <i className="fas fa-plus"></i>
+          </D.RadiusBox>
           <D.RadiusBox
             right={0.5}
             left={0.5}

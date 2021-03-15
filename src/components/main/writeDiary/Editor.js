@@ -6,16 +6,19 @@ import "react-quill/dist/quill.snow.css";
 import D from "styles/divs";
 import B from "styles/buttons";
 
-const Editor = () => {
+const Editor = ({ onHandleError }) => {
   const [image, setImage] = useState([]);
   const [text, setText] = useState([]);
   const [body, setBody] = useState("");
+  const [tmpBody, setTmpBody] = useState("");
   const editor = useRef();
 
   const onSubmit = () => {
     setBody("");
     console.log(text.join(","));
     console.log(image);
+    setText([]);
+    setImage([]);
   };
   const modules = {
     toolbar: {
@@ -43,11 +46,14 @@ const Editor = () => {
       else img.push(encoding(e.insert.image, img.length));
     });
     setText(txt);
-    setImage(img);
+    if (image.length <= 3) setImage(img);
+    else {
+      onHandleError("이미지는 최대 4장까지 가능합니다");
+    }
   };
 
   return (
-    <D.FlexBoxColumn>
+    <D.FlexBoxColumn style={{ fontFamily: "light", fontSize: "2rem" }}>
       <div className="text-editor">
         <ReactQuill
           ref={editor}

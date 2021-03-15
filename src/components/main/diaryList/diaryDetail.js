@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import B from "styles/buttons";
 import D from "styles/divs";
 import T from "styles/text";
-import { useDispatch } from "react-redux";
-import { diaryActions } from "modules/diaryContainer";
-
+import { useDispatch, useSelector } from "react-redux";
+import { diaryActions } from "modules/diary";
+import noPicture from "image/no_picture.png";
 const DiaryDetail = () => {
   const dispatch = useDispatch();
+  const store = useSelector((state) => state.diaryReducer);
+  useEffect(() => {
+    dispatch(diaryActions.detailRequest(store.id));
+  }, []);
   return (
     <div
       style={{
         width: "100%",
         height: "40rem",
-        overflow: "scroll",
         marginTop: "2rem",
       }}
     >
@@ -30,9 +33,9 @@ const DiaryDetail = () => {
         <D.ShadowBox width="60" height="32" top="1" size="1"></D.ShadowBox>
       </D.FlexBoxColumn>
       <D.FlexBoxRow width="60" top="1">
-        <button>{"<"}</button>
+        <B.ArrowBtn>{"<"}</B.ArrowBtn>
         <T.BlakcLight>12/60</T.BlakcLight>
-        <button>{">"}</button>
+        <B.ArrowBtn>{">"}</B.ArrowBtn>
       </D.FlexBoxRow>
     </div>
   );
