@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import TodoItem from "./todoItem";
 
 import { useSelector, useDispatch } from "react-redux";
-import { todoTypes, todoActions } from "modules/todo";
+import { todoActions } from "modules/todo";
 
 import T from "styles/text";
 import D from "styles/divs";
@@ -10,17 +10,12 @@ import D from "styles/divs";
 const TodoList = () => {
   const store = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
-  const [list, setList] = useState(store.list);
+  const list = useMemo(() => store.list || [], [store]);
   const [text, setText] = useState("");
 
   useEffect(() => {
     dispatch(todoActions.requestList());
   }, []);
-
-  useEffect(() => {
-    setList(store.list);
-    console.log(list);
-  }, [store]);
 
   const todo = useMemo(() => {
     return list.filter((l) => l.classification === 1);
@@ -47,7 +42,7 @@ const TodoList = () => {
     e.preventDefault();
     e.currentTarget.classList.remove("dragged-over");
     const data = e.dataTransfer.getData("data");
-    const updated = list.map((l) => {
+    /* const updated =*/ list.map((l) => {
       if (l.id === parseInt(data)) {
         l.classification = value;
         dispatch(todoActions.editRequest(l.id, { classification: value }));
@@ -55,7 +50,7 @@ const TodoList = () => {
       return l;
     });
 
-    setList(updated);
+    //setList(updated);
   };
 
   const onChange = (e) => {

@@ -5,18 +5,20 @@ import I from "styles/inputs";
 import D from "styles/divs";
 import B from "styles/buttons";
 import noPicture from "image/no_picture.png";
+import { mypetActions } from "modules/mypet";
 
 const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const mypetDispatch = useDispatch();
+  const store = useSelector((state) => state.mypetReducer);
 
   const reducer = (state = {}, action) => {
     switch (action.type) {
       case "NAME":
         return { ...state, name: action.name };
-      case "SPACIES":
-        return { ...state, spacies: action.spacies };
+      case "SPECIES":
+        return { ...state, species: action.species };
       case "IMAGEPATH":
         imageReader(action.imagePath);
         return { ...state, imagePath: action.imagePath };
@@ -34,6 +36,7 @@ const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
   };
 
   const imageReader = (e) => {
+    console.log(e);
     const fileReader = new FileReader();
     fileReader.readAsDataURL(e);
     fileReader.onload = (e) => {
@@ -41,35 +44,47 @@ const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
     };
   };
   const [data, dispatch] = useReducer(reducer, {
-    name: "",
-    spacies: "",
-    imagePath: "",
-    image: "",
-    gender: "",
-    birth: "",
-    body: "",
+    name: mod.data ? mod.data.pet_name : "",
+    species: mod.data ? mod.data.species : "",
+    imagePath: mod.data ? mod.data.profile_image : "",
+    image: mod.data ? mod.data.profile_image : "",
+    gender: mod.data ? mod.data.gender : "",
+    birth: mod.data ? mod.data.birthday : "",
+    body: mod.data ? mod.data.profile : "",
   });
 
   const onSubmit = () => {
+    if (!data.name || !data.birth || !data.species) {
+      setErrorMessage("항목을 채워주세요.");
+      setError(true);
+      return;
+    }
     const formData = new FormData();
     formData.append("pet_name", data.name);
     formData.append("gender", data.gender);
     formData.append("birthday", data.birth);
-    if (data.imagePath) formData.append("profile_image", data.imagePath);
+    formData.append("species", data.species);
+
+    if (mod === "create") {
+      if (data.imagePath) formData.append("profile_image", data.imagePath);
+    } else {
+      if (data.imagePath && mod.data.profile_image !== data.imagePath)
+        formData.append("profile_image", data.imagePath);
+    }
     if (data.body) formData.append("profile", data.body);
 
-    //console.log(mod === "create")
+    if (mod === "create") {
+      mypetDispatch(mypetActions.createRequest(formData));
+    } else {
+      console.log("edit");
+      mypetDispatch(mypetActions.editRequest(formData, store.id));
+    }
+    setModalVisivle(false);
+    dispatch(mypetActions.listRequest());
   };
 
   return (
     <>
-      {error && (
-        <Alert
-          severity="warnning"
-          message={errorMessage}
-          setVisible={setError}
-        />
-      )}
       <D.BlackOverlay onClick={(e) => setModalVisivle(false)} />
       <D.ModalWhiteBox width="65" height="40" padding="3rem">
         <D.FlexBoxRow>
@@ -82,6 +97,7 @@ const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
                 dispatch({ type: "BIRTH", birth: e.target.value })
               }
             />
+            성별
             <I.MypetSelector
               value={data.gender}
               onChange={(e) =>
@@ -94,12 +110,18 @@ const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
             </I.MypetSelector>
             <I.MypetInput
               placeholder="종"
-              value={data.spacies}
+              value={data.species}
               onChange={(e) =>
-                dispatch({ type: "SPACIES", spacies: e.target.value })
+                dispatch({ type: "SPECIES", species: e.target.value })
               }
             />
-            <I.BorderArea placeholder="기타사항" height="10" top="1" />
+            <I.BorderArea
+              placeholder="기타사항"
+              height="10"
+              top="1"
+              value={data.body}
+              onChange={(e) => dispatch({ type: "BODY", body: e.target.value })}
+            />
           </D.FlexBoxRow>
           <D.FlexBoxColumn width="30" height="35">
             <label htmlFor="image">
@@ -119,13 +141,26 @@ const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
                 dispatch({ type: "IMAGEPATH", imagePath: e.target.files[0] });
               }}
             />
-            <I.BottomBorderInput placeholder="이름" />
+            <I.BottomBorderInput
+              placeholder="이름"
+              value={data.name}
+              onChange={(e) => {
+                dispatch({ type: "NAME", name: e.target.value });
+              }}
+            />
             <B.RoundBtn width="15" height="3" top="2" onClick={onSubmit}>
               {mod === "create" ? "작성완료" : "수정완료"}
             </B.RoundBtn>
           </D.FlexBoxColumn>
         </D.FlexBoxRow>
       </D.ModalWhiteBox>
+      {error && (
+        <Alert
+          severity="warnning"
+          message={errorMessage}
+          setVisible={setError}
+        />
+      )}
     </>
   );
 };

@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   mypageReducer,
   diaryReducer,
   todoReducer,
-  mypageReducer,
+  mypetReducer,
 });
 
 export default rootReducer;

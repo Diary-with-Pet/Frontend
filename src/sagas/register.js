@@ -16,7 +16,7 @@ function* REGISTER_REQUEST(action) {
     yield call(callRegister, action.data);
     yield put(registerActions.registerSuccesss());
   } catch (e) {
-    yield put(registerActions.registerFailure(""));
+    yield put(registerActions.registerFailure("회원가입 실패"));
   }
 }
 

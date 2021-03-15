@@ -19,6 +19,16 @@ const Box = styled.div`
   margin-bottom: ${({ bottom }) => bottom}rem;
 `;
 
+const ShadowBox = styled(Box)`
+  border: 1px solid ${palette.magenta};
+  box-shadow: 2px 2px 5px 0px rgba(255, 108, 127, 0.8);
+  box-sizing: border-box;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  overflow-y: scroll;
+`;
 const RoundShadowBox = styled(Box)`
   opacity: 0;
   background-color: ${palette.white};
@@ -403,5 +413,6 @@ const D = {
   TodoInput,
   ListItem,
   Frame,
+  ShadowBox,
 };
 export default D;

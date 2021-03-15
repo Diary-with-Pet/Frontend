@@ -45,7 +45,6 @@ const todoReducer = (state = { list: [] }, action) => {
     case DELETE_REQUEST:
       return { ...state, id: action.id };
     case DELETE_SUCCESS:
-      console.log(action);
       return {
         result: "success",
         list: state.list.filter((item) => {

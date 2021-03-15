@@ -24,7 +24,6 @@ const MyPage = () => {
       setErrorMessage(store.reason);
       setError(true);
     }
-    console.log(store);
   }, [store]);
 
   useEffect(() => {

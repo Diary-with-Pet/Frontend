@@ -7,11 +7,14 @@ function* listRequest() {
   try {
     const { data } = yield call([getAccess(), "get"], "/todo");
     yield put(todoActions.requestSuccess(data));
-  } catch (e) {}
+  } catch (e) {
+    yield put(
+      todoActions.requestFail("투두리스트를 불러오는것에 실패했습니다")
+    );
+  }
 }
 
 function* deleteRequest(action) {
-  console.log(action);
   try {
     yield call([getAccess(), "delete"], `todo/${action.id}`);
     yield put(todoActions.deleteSuccess(action.id));
@@ -19,7 +22,6 @@ function* deleteRequest(action) {
 }
 
 function* editRequest(action) {
-  console.log(action);
   try {
     yield call([getAccess(), "patch"], `/todo/${action.id}/`, action.data);
     yield put(

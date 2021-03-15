@@ -16,7 +16,6 @@ const TodoItem = ({ item }) => {
   const [readOnly, setReadOnly] = useState(true);
   const focus = useRef();
   const onDragStart = (e) => {
-    console.log(e);
     e.dataTransfer.setData("data", e.currentTarget.id);
     e.dataTransfer.effectAllowed = "move";
   };

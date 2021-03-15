@@ -8,7 +8,9 @@ function* mypageRequest() {
     const { data } = yield call([getAccess(), "get"], "/mypage/list");
     yield put(mypageActions.mypageSuccess(data[0]));
   } catch (e) {
-    yield put(mypageActions.mypageFailure("fail"));
+    yield put(
+      mypageActions.mypageFailure("마이페이지 불러오기에 실패했습니다.")
+    );
   }
 }
 
@@ -22,7 +24,7 @@ function* editRequest(action) {
     yield put(mypageActions.editSuccess(data));
     yield put(mypageActions.mypageRequest());
   } catch (e) {
-    yield put(mypageActions.editFailure(e));
+    yield put(mypageActions.editFailure("마이페이지 수정에 실패했습니다."));
   }
 }
 
