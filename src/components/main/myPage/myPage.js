@@ -1,30 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { EditModal } from "./editModal";
+import { getAccess } from "api";
 
-import T from "styles/text";
-import D from "styles/divs";
-import B from "styles/buttons";
-import { useDispatch, useSelector } from "react-redux";
-import { mypageActions } from "modules/mypage";
-import Alert from "api/Alert";
+import * as S from "styles/myPage";
+
 const MyPage = () => {
   const [modalVisible, setModalVisivle] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const dispatch = useDispatch();
-  const store = useSelector((state) => state.mypageReducer);
-
-  useEffect(() => {
-    dispatch(mypageActions.mypageRequest());
-  }, []);
-
-  useEffect(() => {
-    if (store.result == "fail") {
-      setErrorMessage(store.reason);
-      setError(true);
-    }
-  }, [store]);
+  const [myData, setMyData] = useState({
+    email: "",
+    username: "",
+    profile_image: "",
+    profile: "",
+  });
 
   useEffect(() => {
     function LimitWheel(e) {
@@ -38,19 +25,26 @@ const MyPage = () => {
     return () => window.removeEventListener("wheel", LimitWheel);
   }, [modalVisible]);
 
+  useEffect(() => {
+    getAccess()
+      .get("/mypage/list")
+      .then((e) => setMyData(e.data[0]))
+      .catch(() => alert("마이페이지 불러오기에 실패하였습니다."));
+  }, []);
+
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      {modalVisible && <EditModal setModalVisivle={setModalVisivle} />}
-      <D.InLineBox left="0" top="0">
-        <T.MagentaThin size="5" left="1">
-          MY PAGE
-        </T.MagentaThin>
-        <D.FlexBoxRow left="5" top="1">
-          <D.ProfileImage src={store.profile_image} />
-          <D.InLineBox left="2" top="0">
-            <D.FlexBoxRow>
-              <T.MagentaLight size="3">{store.username}</T.MagentaLight>
-              <B.IconButton
+    <div style={{ height: "100vh", width: "100vw" }}>
+      {modalVisible && (
+        <EditModal setModalVisivle={setModalVisivle} curData={myData} />
+      )}
+      <S.Container>
+        <S.Title>MY PAGE</S.Title>
+        <S.InfoBox>
+          <S.ProfileImage src={myData.profile_image || null} />
+          <S.TextBox>
+            <S.FlexBoxRow>
+              <S.UserName>{myData.username}</S.UserName>
+              <S.IconButton
                 top="1"
                 size="1.5"
                 left="0.5"
@@ -59,22 +53,13 @@ const MyPage = () => {
                 onClick={() => setModalVisivle(true)}
               >
                 <i className="fas fa-edit"></i>
-              </B.IconButton>
-            </D.FlexBoxRow>
-            <T.PigPinkLight size="1.5">{store.email}</T.PigPinkLight>
-            <T.BlakcLight size="1.5" top="1">
-              {store.profile}
-            </T.BlakcLight>
-          </D.InLineBox>
-        </D.FlexBoxRow>
-      </D.InLineBox>
-      {error && (
-        <Alert
-          severity="warnning"
-          message={errorMessage}
-          setVisible={setError}
-        />
-      )}
+              </S.IconButton>
+            </S.FlexBoxRow>
+            <S.EmailText>{myData.email}</S.EmailText>
+            <S.ContentsText>{myData.profile}</S.ContentsText>
+          </S.TextBox>
+        </S.InfoBox>
+      </S.Container>
     </div>
   );
 };

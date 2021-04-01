@@ -1,41 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import I from "styles/inputs";
-import D from "styles/divs";
-import T from "styles/text";
+import * as S from "styles/diary";
 
-import { useDispatch } from "react-redux";
-import { diaryActions } from "modules/diary";
-
-const DiaryItem = ({ id, isSelected }) => {
-  const [check, isChecked] = useState(isSelected);
-  const dispatch = useDispatch();
-  useEffect(() => isChecked(isSelected), [isSelected]);
+const DiaryItem = ({ id, isSelected, setMod, setSelect }) => {
+  console.log(isSelected);
 
   return (
-    <D.ListItem>
-      <I.CheckBox htmlFor={`check${id}`} type="checkbox" isChecked={check}>
+    <S.ItemContainer>
+      <S.CheckBox htmlFor={`check${id}`} isSelected={isSelected}>
         ✔
-      </I.CheckBox>
+      </S.CheckBox>
       <input
         type="checkbox"
         id={`check${id}`}
-        value={check}
-        onClick={() => isChecked(!check)}
+        value={isSelected}
+        onClick={() => setSelect(id)}
       />
-      <T.MagentaBold
+      <S.ItemTitle
         size={2}
         style={{ width: "30rem", textAlign: "left" }}
         onClick={() => {
-          dispatch(diaryActions.modToDetail(id));
+          setMod(id);
         }}
       >
         Title
-      </T.MagentaBold>
-      <T.MagentaLight style={{ marginRight: "2rem" }}>
-        2020-03-08
-      </T.MagentaLight>
-    </D.ListItem>
+      </S.ItemTitle>
+      <S.ItemDate>2020-03-08</S.ItemDate>
+    </S.ItemContainer>
   );
 };
 

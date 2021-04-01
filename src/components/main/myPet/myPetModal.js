@@ -1,104 +1,96 @@
-import React, { useState, useReducer } from "react";
-import Alert from "api/Alert";
-import { useDispatch, useSelector } from "react-redux";
-import I from "styles/inputs";
-import D from "styles/divs";
-import B from "styles/buttons";
+import React, { useReducer } from "react";
+import * as S from "styles/mypet";
 import noPicture from "image/no_picture.png";
-import { mypetActions } from "modules/mypet";
+import { getAccess } from "api";
 
-const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const mypetDispatch = useDispatch();
-  const store = useSelector((state) => state.mypetReducer);
-
+const MyPetModal = ({ preData, mod, setModalVisivle }) => {
   const reducer = (state = {}, action) => {
     switch (action.type) {
       case "NAME":
-        return { ...state, name: action.name };
+        return { ...state, pet_name: action.pet_name };
       case "SPECIES":
         return { ...state, species: action.species };
       case "IMAGEPATH":
-        imageReader(action.imagePath);
-        return { ...state, imagePath: action.imagePath };
+        imageReader(action.profile_image);
+        return { ...state, profile_image: action.profile_image };
       case "IMAGE":
         return { ...state, image: action.image };
       case "GENDER":
         return { ...state, gender: action.gender };
       case "BIRTH":
-        return { ...state, birth: action.birth };
+        return { ...state, birthday: action.birthday };
       case "BODY":
-        return { ...state, body: action.body };
+        return { ...state, profile: action.profile };
       default:
         return state;
     }
   };
 
   const imageReader = (e) => {
-    console.log(e);
     const fileReader = new FileReader();
     fileReader.readAsDataURL(e);
     fileReader.onload = (e) => {
       dispatch({ type: "IMAGE", image: e.target.result });
     };
   };
-  const [data, dispatch] = useReducer(reducer, {
-    name: mod.data ? mod.data.pet_name : "",
-    species: mod.data ? mod.data.species : "",
-    imagePath: mod.data ? mod.data.profile_image : "",
-    image: mod.data ? mod.data.profile_image : "",
-    gender: mod.data ? mod.data.gender : "",
-    birth: mod.data ? mod.data.birthday : "",
-    body: mod.data ? mod.data.profile : "",
-  });
+  const [data, dispatch] = useReducer(reducer, mod === "create" ? {} : preData);
+  console.log();
 
-  const onSubmit = () => {
-    if (!data.name || !data.birth || !data.species) {
-      setErrorMessage("항목을 채워주세요.");
-      setError(true);
-      return;
-    }
+  const editSubmit = () => {
     const formData = new FormData();
-    formData.append("pet_name", data.name);
-    formData.append("gender", data.gender);
-    formData.append("birthday", data.birth);
-    formData.append("species", data.species);
+    if (preData.pet_name !== data.pet_name)
+      formData.append("pet_name", data.pet_name);
+    if (preData.gender !== data.gender) formData.append("gender", data.gender);
+    if (preData.birthday !== data.birthday)
+      formData.append("birthday", data.birthday);
+    if (preData.species !== data.species)
+      formData.append("species", data.species);
+    if (preData.profile_image)
+      formData.append("profile_image", data.profile_image);
+    if (preData.profile !== data.profile)
+      formData.append("profile", data.profile);
 
-    if (mod === "create") {
-      if (data.imagePath) formData.append("profile_image", data.imagePath);
-    } else {
-      if (data.imagePath && mod.data.profile_image !== data.imagePath)
-        formData.append("profile_image", data.imagePath);
-    }
-    if (data.body) formData.append("profile", data.body);
+    getAccess()
+      .patch(`/mypet/${preData.id}`, formData)
+      .then(() => alert("펫 정보가 업데이트 되었습니다."))
+      .catch(() => alert("펫 정보 수정에 실패하였습니다"));
 
-    if (mod === "create") {
-      mypetDispatch(mypetActions.createRequest(formData));
-    } else {
-      console.log("edit");
-      mypetDispatch(mypetActions.editRequest(formData, store.id));
-    }
     setModalVisivle(false);
-    dispatch(mypetActions.listRequest());
+  };
+
+  const createSubmit = () => {
+    const formData = new FormData();
+    formData.append("pet_name", data.pet_name);
+    formData.append("gender", data.gender);
+    formData.append("birthday", data.birthday);
+    formData.append("species", data.species);
+    formData.append("profile_image", data.profile_image);
+    formData.append("profile", data.profile);
+
+    getAccess()
+      .post("/mypet/", formData)
+      .then(() => alert("새로운 펫 정보가 업데이트 되었습니다."))
+      .catch(() => alert("새로운 펫 정보 추가에 실패하였습니다"));
+
+    setModalVisivle(false);
   };
 
   return (
     <>
-      <D.BlackOverlay onClick={(e) => setModalVisivle(false)} />
-      <D.ModalWhiteBox width="65" height="40" padding="3rem">
-        <D.FlexBoxRow>
-          <D.FlexBoxRow width="35" style={{ flexWrap: "wrap" }} top="1">
+      <S.BlackOverlay onClick={(e) => setModalVisivle(false)} />
+      <S.ModalWhiteBox>
+        <S.BetweenBox>
+          <S.InputWindow>
             생년월일/입양날짜
-            <I.MypetInput
+            <S.InputBox
               type="date"
-              value={data.birth}
+              value={data.birthday}
               onChange={(e) =>
-                dispatch({ type: "BIRTH", birth: e.target.value })
+                dispatch({ type: "BIRTH", birthday: e.target.value })
               }
             />
             성별
-            <I.MypetSelector
+            <S.MypetSelector
               value={data.gender}
               onChange={(e) =>
                 dispatch({ type: "GENDER", gender: e.target.value })
@@ -107,61 +99,67 @@ const MyPetModal = ({ mod, modalVisible, setModalVisivle }) => {
               <option value={2}>그 외</option>
               <option value={0}>여</option>
               <option value={1}>남</option>
-            </I.MypetSelector>
-            <I.MypetInput
+            </S.MypetSelector>
+            종
+            <S.InputBox
               placeholder="종"
               value={data.species}
               onChange={(e) =>
                 dispatch({ type: "SPECIES", species: e.target.value })
               }
             />
-            <I.BorderArea
+            기타사항
+            <S.InputBox
               placeholder="기타사항"
               height="10"
               top="1"
-              value={data.body}
-              onChange={(e) => dispatch({ type: "BODY", body: e.target.value })}
+              value={data.profile}
+              onChange={(e) =>
+                dispatch({ type: "BODY", profile: e.target.value })
+              }
             />
-          </D.FlexBoxRow>
-          <D.FlexBoxColumn width="30" height="35">
+          </S.InputWindow>
+          <S.ImageInputBox width="30" height="35">
             <label htmlFor="image">
-              <D.ImageInputBox
+              <S.ImageInputWindow
                 width="15"
                 height="15"
                 radius="200"
                 src={data.image ? data.image : noPicture}
               />
             </label>
-            <I.ImageInput
+            <S.ImgInput
               id="image"
               type="file"
               accept="image/*"
-              files={data.imagePath}
+              files={data.profile_image}
               onChange={(e) => {
-                dispatch({ type: "IMAGEPATH", imagePath: e.target.files[0] });
+                dispatch({
+                  type: "IMAGEPATH",
+                  profile_image: e.target.files[0],
+                });
               }}
             />
-            <I.BottomBorderInput
+            <S.NameInput
               placeholder="이름"
-              value={data.name}
+              value={data.pet_name}
               onChange={(e) => {
-                dispatch({ type: "NAME", name: e.target.value });
+                dispatch({ type: "NAME", pet_name: e.target.value });
               }}
             />
-            <B.RoundBtn width="15" height="3" top="2" onClick={onSubmit}>
+            <S.SubmitBtn
+              width="15"
+              height="3"
+              top="2"
+              onClick={mod === "create" ? createSubmit : editSubmit}
+            >
               {mod === "create" ? "작성완료" : "수정완료"}
-            </B.RoundBtn>
-          </D.FlexBoxColumn>
-        </D.FlexBoxRow>
-      </D.ModalWhiteBox>
-      {error && (
-        <Alert
-          severity="warnning"
-          message={errorMessage}
-          setVisible={setError}
-        />
-      )}
+            </S.SubmitBtn>
+          </S.ImageInputBox>
+        </S.BetweenBox>
+      </S.ModalWhiteBox>
     </>
   );
 };
+
 export default MyPetModal;

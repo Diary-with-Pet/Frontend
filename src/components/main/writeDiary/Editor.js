@@ -3,20 +3,26 @@ import ReactQuill from "react-quill";
 
 import "react-quill/dist/quill.snow.css";
 
-import D from "styles/divs";
-import B from "styles/buttons";
+import * as S from "styles/diaryWriter";
 
-const Editor = ({ onHandleError }) => {
+const Editor = () => {
   const [image, setImage] = useState([]);
   const [text, setText] = useState([]);
   const [body, setBody] = useState("");
-  const [tmpBody, setTmpBody] = useState("");
+  const [title, SetTitle] = useState("");
+
   const editor = useRef();
 
   const onSubmit = () => {
     setBody("");
     console.log(text.join(","));
     console.log(image);
+
+    const data = new FormData();
+    data.append("title", title);
+    data.append("contents", text.join(","));
+    data.append("image", image);
+    console.log(data);
     setText([]);
     setImage([]);
   };
@@ -41,6 +47,7 @@ const Editor = ({ onHandleError }) => {
   const onChange = (e) => {
     const txt = [];
     const img = [];
+    // eslint-disable-next-line array-callback-return
     e.ops.map((e) => {
       if (typeof e.insert === "string") txt.push(e.insert);
       else img.push(encoding(e.insert.image, img.length));
@@ -48,16 +55,21 @@ const Editor = ({ onHandleError }) => {
     setText(txt);
     if (image.length <= 3) setImage(img);
     else {
-      onHandleError("이미지는 최대 4장까지 가능합니다");
+      alert("이미지는 최대 4장까지 가능합니다");
     }
   };
 
   return (
-    <D.FlexBoxColumn style={{ fontFamily: "light", fontSize: "2rem" }}>
+    <S.EditorContiner>
+      <S.TitleInput
+        placeholder="제목"
+        value={title}
+        onChange={(e) => SetTitle(e.target.value)}
+      />
       <div className="text-editor">
         <ReactQuill
           ref={editor}
-          style={{ width: "60rem", height: "35rem" }}
+          style={{ width: "60rem", height: "30rem" }}
           modules={modules}
           value={body}
           onChange={(content, delta, source, editor) => {
@@ -66,10 +78,8 @@ const Editor = ({ onHandleError }) => {
           }}
         />
       </div>
-      <B.RoundBtn onClick={onSubmit} top={3} width="10" height="3">
-        작성 완료
-      </B.RoundBtn>
-    </D.FlexBoxColumn>
+      <S.SubmitBtn onClick={onSubmit}>작성 완료</S.SubmitBtn>
+    </S.EditorContiner>
   );
 };
 

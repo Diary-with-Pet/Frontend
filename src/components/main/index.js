@@ -5,7 +5,6 @@ import { MyPet } from "components/main/myPet";
 import { TodoList } from "components/main/todoList";
 import { DiaryContainer } from "components/main/diaryList";
 
-import D from "styles/divs";
 import { WriteDiary } from "./writeDiary";
 
 const Main = () => {
@@ -15,9 +14,9 @@ const Main = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setPrePos(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     delta = 0;
   }, []);
-
   const scrollMoveTo = (num) => {
     let target = container.current.childNodes[num];
     target.scrollIntoView({
@@ -26,17 +25,18 @@ const Main = () => {
     setPrePos(num);
     delta = 0;
   };
+
   return (
-    <D.MainContainer>
+    <div style={{ display: "flex" }}>
       <SideMenu moveTo={scrollMoveTo} focus={prePos} onClick={() => delta} />
-      <div ref={container}>
+      <div ref={container} style={{ width: "100vw" }}>
         <MyPage />
         <MyPet />
         <TodoList />
         <DiaryContainer />
         <WriteDiary />
       </div>
-    </D.MainContainer>
+    </div>
   );
 };
 

@@ -1,31 +1,26 @@
 import React from "react";
 
-import T from "styles/text";
-import D from "styles/divs";
+import * as S from "styles/mypet";
 
 import noPicture from "image/no_picture.png";
 
-import { useDispatch, useSelector } from "react-redux";
-import { mypetActions } from "modules/mypet";
+import { getAccess } from "api";
 
-const MyPetItem = ({ setModalVisivle, setMod, data }) => {
-  const dispatch = useDispatch();
-
+const MyPetItem = ({ setModalVisivle, setMod, data, setId }) => {
   const onDelete = () => {
-    dispatch(mypetActions.deleteRequest(data.id));
+    getAccess()
+      .delete(`/mypet/${data.id}/`)
+      .then((e) => alert("펫 목록을 삭제하였습니다."))
+      .catch(() => alert("펫 목록 삭제에 실패하였습니다."));
   };
   return (
-    <D.PetContainer>
-      <D.FlexBoxRow>
-        <D.CircleImage src={data.profile_image || noPicture} />
-        <D.InLineBox
-          style={{ position: "absolute", left: "15rem", top: "2rem" }}
-        >
-          <D.FlexBoxRow>
-            <T.WhiteBold size={2} right={1}>
-              {data.pet_name}
-            </T.WhiteBold>
-            <i
+    <S.ItemContainer>
+      <S.InfoContainer>
+        <S.CircleImage src={data.profile_image || noPicture} />
+        <S.InfoBox>
+          <S.FlexBoxRow>
+            <S.PetName>{data.pet_name}</S.PetName>
+            <S.GenderIcon
               className={
                 data.gender === 0
                   ? "fas fa-venus"
@@ -34,45 +29,28 @@ const MyPetItem = ({ setModalVisivle, setMod, data }) => {
                   : "fas fa-question"
               }
               style={{ fontSize: "2rem" }}
-            ></i>
-            <T.WhiteLight
-              size={1}
-              left={0.5}
-              style={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                width: "7rem",
-              }}
-            >
-              {data.species}
-            </T.WhiteLight>
-          </D.FlexBoxRow>
-          <T.WhiteLight size={1}>{data.birthday}</T.WhiteLight>
-          <T.WhiteThin className="container" size={1} top={1}>
-            {data.profile}
-          </T.WhiteThin>
-        </D.InLineBox>
-      </D.FlexBoxRow>
-      <D.FlexBoxRow
-        style={{ position: "absolute", bottom: "1rem", right: "1rem" }}
-      >
-        <T.WhiteLight
-          size={0.5}
-          right={1}
+            ></S.GenderIcon>
+            <S.SpeciesBox>{data.species}</S.SpeciesBox>
+          </S.FlexBoxRow>
+          <S.SpeciesBox size={1}>{data.birthday}</S.SpeciesBox>
+          <S.BodyArea readOnly={true}>{data.profile}</S.BodyArea>
+        </S.InfoBox>
+      </S.InfoContainer>
+      <S.ButtonsBox>
+        <S.EditButton
           onClick={() => {
             setModalVisivle(true);
-            dispatch(mypetActions.setMypetId(data.id));
-            setMod({ mod: "edit", data: data });
+            setId(data.id);
+            setMod("edit");
           }}
         >
           수정하기
-        </T.WhiteLight>
-        <T.MagentaLight size={0.5} onClick={onDelete}>
+        </S.EditButton>
+        <S.DeleteButton size={0.5} onClick={onDelete}>
           삭제하기
-        </T.MagentaLight>
-      </D.FlexBoxRow>
-    </D.PetContainer>
+        </S.DeleteButton>
+      </S.ButtonsBox>
+    </S.ItemContainer>
   );
 };
 

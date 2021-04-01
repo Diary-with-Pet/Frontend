@@ -26,7 +26,7 @@ const requestFail = (reason) => ({ type: REQUEST_LIST_FAILURE, reason });
 
 const createRequest = (data) => ({ type: CREATE_REQUEST, data });
 const createSuccess = () => ({ type: CREATE_SUCEESS });
-const createFail = (reason) => ({ type: CREATE_FAILURE });
+const createFail = (reason) => ({ type: CREATE_FAILURE, reason });
 
 const deleteReqeust = (id) => ({ type: DELETE_REQUEST, id });
 const deleteSuccess = () => ({ type: DELETE_SUCEESS });
@@ -36,7 +36,7 @@ const detailRequest = (id) => ({ type: REQUEST_DETAIL, id });
 const detailSuccess = (data) => ({ type: REQUEST_DETAIL_SUCCESS, data });
 const detailFail = (reason) => ({ type: REQUEST_DETAIL_FAILURE, reason });
 
-const diaryReducer = (state = { mod: "list" }, action) => {
+const diaryReducer = (state = { mod: "list", list: [] }, action) => {
   switch (action.type) {
     case MOD_TO_LIST:
       return { mod: "list" };

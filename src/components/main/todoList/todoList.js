@@ -1,20 +1,40 @@
 import React, { useState, useMemo, useEffect } from "react";
 import TodoItem from "./todoItem";
 
-import { useSelector, useDispatch } from "react-redux";
-import { todoActions } from "modules/todo";
-
-import T from "styles/text";
-import D from "styles/divs";
+import * as S from "styles/todo";
+import { getAccess } from "api";
 
 const TodoList = () => {
-  const store = useSelector((state) => state.todoReducer);
-  const dispatch = useDispatch();
-  const list = useMemo(() => store.list || [], [store]);
+  const [list, setList] = useState([
+    {
+      id: 11,
+      title: "title수정",
+      content: "ㅎㅎ",
+      classification: 3,
+    },
+    {
+      id: 12,
+      title: "title2",
+      content: "cont2",
+      classification: 1,
+    },
+    {
+      id: 13,
+      title: "cnrkcnrl",
+      content: "ㅎㅎ",
+      classification: 1,
+    },
+  ]);
   const [text, setText] = useState("");
 
+  const requestList = () => {
+    getAccess()
+      .get("/todo")
+      .then((e) => setList(e.data))
+      .catch(() => alert("투두리스트를 불러오는것을 실패했습니다"));
+  };
   useEffect(() => {
-    dispatch(todoActions.requestList());
+    requestList();
   }, []);
 
   const todo = useMemo(() => {
@@ -40,17 +60,19 @@ const TodoList = () => {
   };
   const onDrop = (e, value) => {
     e.preventDefault();
-    e.currentTarget.classList.remove("dragged-over");
     const data = e.dataTransfer.getData("data");
-    /* const updated =*/ list.map((l) => {
+    list.map((l) => {
       if (l.id === parseInt(data)) {
-        l.classification = value;
-        dispatch(todoActions.editRequest(l.id, { classification: value }));
+        getAccess()
+          .patch(`/todo/${l.id}`, {
+            classification: value,
+          })
+          .then(() => requestList())
+          .catch(() => alert("네트워크 에러"));
+        //dispatch(todoActions.editRequest(l.id, { classification: value }));
       }
       return l;
     });
-
-    //setList(updated);
   };
 
   const onChange = (e) => {
@@ -61,72 +83,72 @@ const TodoList = () => {
       content: text,
       classification: 1,
     };
-    dispatch(todoActions.createRequest(data));
+    getAccess()
+      .post("/todo", data)
+      .catch(() => alert("투두리스트 등록을 실패했습니다."));
     setText("");
   };
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
-      <D.InLineBox left="20">
-        <T.MagentaThin size="5" left="1">
-          TO DO LIST
-        </T.MagentaThin>
-      </D.InLineBox>
-      <D.FlexBoxColumn>
-        <D.TodoInput>
-          <input
-            value={text}
-            onChange={onChange}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") onSubmit();
-            }}
-          />
-          <button onClick={onSubmit}>등록</button>
-        </D.TodoInput>
-        <D.FlexBoxRow left="5" top="1" left="10" right="10" width={55}>
-          <D.DragArea
-            type="todo"
-            onDragLeave={(e) => onDragLeave(e)}
-            onDragEnter={(e) => onDragEnter(e)}
-            onDragOver={(e) => onDragOver(e)}
-            onDrop={(e) => onDrop(e, 1)}
-          >
-            <T.WhiteThin>NO STARTED</T.WhiteThin>
-            <div class="container">
-              {todo.map((e) => (
-                <TodoItem item={e}></TodoItem>
-              ))}
-            </div>
-          </D.DragArea>
-          <D.DragArea
-            type="progress"
-            onDragLeave={(e) => onDragLeave(e)}
-            onDragEnter={(e) => onDragEnter(e)}
-            onDragOver={(e) => onDragOver(e)}
-            onDrop={(e) => onDrop(e, 2)}
-          >
-            <T.WhiteThin>PROGRESS</T.WhiteThin>
-            <div class="container">
-              {progress.map((e) => (
-                <TodoItem item={e}></TodoItem>
-              ))}
-            </div>
-          </D.DragArea>
-          <D.DragArea
-            type="done"
-            onDragLeave={(e) => onDragLeave(e)}
-            onDragEnter={(e) => onDragEnter(e)}
-            onDragOver={(e) => onDragOver(e)}
-            onDrop={(e) => onDrop(e, 3)}
-          >
-            <T.WhiteThin>COMPLETE</T.WhiteThin>
-            <div class="container">
-              {done.map((e) => (
-                <TodoItem item={e}></TodoItem>
-              ))}
-            </div>
-          </D.DragArea>
-        </D.FlexBoxRow>
-      </D.FlexBoxColumn>
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <S.Container>
+        <S.Title>TO DO LIST</S.Title>
+        <S.FlexBox>
+          <S.TodoInputBox>
+            <input
+              value={text}
+              onChange={onChange}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") onSubmit();
+              }}
+            />
+            <button onClick={onSubmit}>등록</button>
+          </S.TodoInputBox>
+          <S.DragAreaBox>
+            <S.DragArea
+              type="todo"
+              onDragLeave={(e) => onDragLeave(e)}
+              onDragEnter={(e) => onDragEnter(e)}
+              onDragOver={(e) => onDragOver(e)}
+              onDrop={(e) => onDrop(e, 1)}
+            >
+              <S.ListName>NO STARTED</S.ListName>
+              <div class="container">
+                {todo.map((e) => (
+                  <TodoItem item={e} requestList={requestList}></TodoItem>
+                ))}
+              </div>
+            </S.DragArea>
+            <S.DragArea
+              type="progress"
+              onDragLeave={(e) => onDragLeave(e)}
+              onDragEnter={(e) => onDragEnter(e)}
+              onDragOver={(e) => onDragOver(e)}
+              onDrop={(e) => onDrop(e, 2)}
+            >
+              <S.ListName>PROGRESS</S.ListName>
+              <div class="container">
+                {progress.map((e) => (
+                  <TodoItem item={e} requestList={requestList}></TodoItem>
+                ))}
+              </div>
+            </S.DragArea>
+            <S.DragArea
+              type="done"
+              onDragLeave={(e) => onDragLeave(e)}
+              onDragEnter={(e) => onDragEnter(e)}
+              onDragOver={(e) => onDragOver(e)}
+              onDrop={(e) => onDrop(e, 3)}
+            >
+              <S.ListName>COMPLETE</S.ListName>
+              <div class="container">
+                {done.map((e) => (
+                  <TodoItem item={e} requestList={requestList}></TodoItem>
+                ))}
+              </div>
+            </S.DragArea>
+          </S.DragAreaBox>
+        </S.FlexBox>
+      </S.Container>
     </div>
   );
 };

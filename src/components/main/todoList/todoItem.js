@@ -1,15 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import D from "styles/divs";
-import B from "styles/buttons";
+import * as S from "styles/todo";
+import { getAccess } from "api";
 
-import { useDispatch } from "react-redux";
-import { todoActions } from "modules/todo";
-
-const TodoItem = ({ item }) => {
+const TodoItem = ({ item, requestList }) => {
   const [text, setText] = useState(item);
-  const dispatch = useDispatch();
-
   useEffect(() => {
     setText(item.content);
   }, [item]);
@@ -21,16 +16,20 @@ const TodoItem = ({ item }) => {
   };
 
   const deleteItem = () => {
-    dispatch(todoActions.deleteRequest(item.id));
+    getAccess()
+      .delete(`/todo/${item.id}`)
+      .then(() => requestList())
+      .catch(() => alert("삭제 실패"));
   };
 
   const editItem = () => {
     if (!readOnly) {
-      dispatch(
-        todoActions.editRequest(item.id, {
+      getAccess()
+        .patch(`/todo/${item.id}`, {
           content: text,
         })
-      );
+        .catch(() => alert("네트워크 에러"))
+        .finally(() => requestList());
     } else {
       focus.current.focus();
     }
@@ -39,40 +38,33 @@ const TodoItem = ({ item }) => {
 
   return (
     <>
-      <D.DragItem id={item.id} draggable onDragStart={(e) => onDragStart(e)}>
-        <D.FlexBoxRow>
-          <D.TextArea
+      <S.DragItem id={item.id} draggable onDragStart={(e) => onDragStart(e)}>
+        <S.DragContainer>
+          <S.TextArea
             ref={focus}
             readOnly={readOnly}
             onWheel={(e) => e.stopPropagation()}
             value={text}
             onChange={(e) => setText(e.target.value)}
-          ></D.TextArea>
-          <D.FlexBoxRow
+          ></S.TextArea>
+          <S.FlexBoxRow
             style={{
               justifyContent: "left",
               fontSize: "1rem",
               marginRight: "0",
             }}
           >
-            <B.IconButton
+            <S.IconButton
               className={readOnly ? "fas fa-edit" : "fab fa-telegram-plane"}
-              style={{
-                marginRight: "0.5rem",
-              }}
-              hover="magenta"
-              color="beige"
               onClick={editItem}
             />
-            <B.IconButton
+            <S.IconButton
               className="fas fa-trash"
-              hover="red"
-              color="beige"
               onClick={deleteItem}
-            ></B.IconButton>
-          </D.FlexBoxRow>
-        </D.FlexBoxRow>
-      </D.DragItem>
+            ></S.IconButton>
+          </S.FlexBoxRow>
+        </S.DragContainer>
+      </S.DragItem>
     </>
   );
 };
