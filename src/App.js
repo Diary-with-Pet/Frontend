@@ -2,7 +2,7 @@ import Route from "./components";
 import { Provider } from "react-redux";
 import store, { customHistory } from "./store";
 import { createGlobalStyle } from "styled-components";
-import { Redirect, Router, BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 const GlobalStyle = createGlobalStyle`
 body{
   @font-face {

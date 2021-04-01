@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as S from "styles/diary";
 import DiaryItem from "./diaryItem";
-import { getAccess } from "api";
+// import { getAccess } from "api";
 const DiaryList = ({ setMod }) => {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [list, setList] = useState([{ id: 0 }]);
