@@ -17,7 +17,7 @@ const TodoItem = ({ item, requestList }) => {
 
   const deleteItem = () => {
     getAccess()
-      .delete(`/todo/${item.id}`)
+      .delete(`/todo/${item.id}/`)
       .then(() => requestList())
       .catch(() => alert("삭제 실패"));
   };
@@ -25,7 +25,7 @@ const TodoItem = ({ item, requestList }) => {
   const editItem = () => {
     if (!readOnly) {
       getAccess()
-        .patch(`/todo/${item.id}`, {
+        .patch(`/todo/${item.id}/`, {
           content: text,
         })
         .catch(() => alert("네트워크 에러"))

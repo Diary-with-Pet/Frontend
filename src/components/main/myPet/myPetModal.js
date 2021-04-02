@@ -3,7 +3,7 @@ import * as S from "styles/mypet";
 import noPicture from "image/no_picture.png";
 import { getAccess } from "api";
 
-const MyPetModal = ({ preData, mod, setModalVisivle }) => {
+const MyPetModal = ({ preData, mod, setModalVisivle, setData }) => {
   const reducer = (state = {}, action) => {
     switch (action.type) {
       case "NAME":
@@ -45,15 +45,16 @@ const MyPetModal = ({ preData, mod, setModalVisivle }) => {
       formData.append("birthday", data.birthday);
     if (preData.species !== data.species)
       formData.append("species", data.species);
-    if (preData.profile_image)
+    if (typeof preData.profile_image !== "string")
       formData.append("profile_image", data.profile_image);
     if (preData.profile !== data.profile)
       formData.append("profile", data.profile);
 
     getAccess()
-      .patch(`/mypet/${preData.id}`, formData)
+      .patch(`/mypet/${preData.id}/`, formData)
       .then(() => alert("펫 정보가 업데이트 되었습니다."))
-      .catch(() => alert("펫 정보 수정에 실패하였습니다"));
+      .then(() => setData())
+      .catch(() => alert("펫 정보 업데이트에 실패하였습니다"));
 
     setModalVisivle(false);
   };
@@ -61,7 +62,7 @@ const MyPetModal = ({ preData, mod, setModalVisivle }) => {
   const createSubmit = () => {
     const formData = new FormData();
     formData.append("pet_name", data.pet_name);
-    formData.append("gender", data.gender);
+    formData.append("gender", data.gender || 2);
     formData.append("birthday", data.birthday);
     formData.append("species", data.species);
     formData.append("profile_image", data.profile_image);
@@ -70,6 +71,7 @@ const MyPetModal = ({ preData, mod, setModalVisivle }) => {
     getAccess()
       .post("/mypet/", formData)
       .then(() => alert("새로운 펫 정보가 업데이트 되었습니다."))
+      .then(() => setData())
       .catch(() => alert("새로운 펫 정보 추가에 실패하였습니다"));
 
     setModalVisivle(false);
@@ -91,7 +93,8 @@ const MyPetModal = ({ preData, mod, setModalVisivle }) => {
             />
             성별
             <S.MypetSelector
-              value={data.gender}
+              defaultValue={2}
+              value={data.gender || 2}
               onChange={(e) =>
                 dispatch({ type: "GENDER", gender: e.target.value })
               }

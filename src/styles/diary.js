@@ -32,6 +32,7 @@ export const ListContainer = styled.div`
   align-items: center;
 `;
 export const FlexBoxColumn = styled.div`
+  width: 60.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,6 +60,7 @@ export const SelectButton = styled.button`
   cursor: pointer;
 `;
 export const DeleteButton = styled.button`
+  margin-right: 1rem;
   background-color: #00000000;
   outline: none;
   border: none;
@@ -133,7 +135,7 @@ export const CheckBox = styled.label`
 
 export const ItemTitle = styled.h5`
   font-family: "Bold";
-  font-size: 2rem;
+  font-size: 1rem;
   width: 30rem;
   text-align: left;
   color: ${palette.mainColor};
@@ -165,7 +167,6 @@ export const DateText = styled.div`
 `;
 
 export const DiaryContainer = styled.div`
-  display: flex;
   width: 60rem;
   height: 30rem;
   margin: 1rem 0;
@@ -174,15 +175,21 @@ export const DiaryContainer = styled.div`
   box-shadow: 2px 2px 5px 0px ${palette.mainColor + "AA"};
   box-sizing: border-box;
   padding: 1rem;
-  display: flex;
+  display: block;
   flex-wrap: wrap;
   overflow: hidden;
   overflow-y: scroll;
 
   font-family: "light";
-  font-size: 2rem;
+  h1 {
+    width: 100%;
+    height: 3rem;
+  }
   img {
     width: 100%;
+  }
+  div {
+    word-break: break-all;
   }
 `;
 

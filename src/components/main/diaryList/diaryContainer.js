@@ -6,15 +6,16 @@ import DiaryDetail from "./diaryDetail";
 
 const DiaryContainer = () => {
   const [mod, setMod] = useState(-1);
+  const [len, setLen] = useState(0);
 
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <div className="list" style={{ height: "100vh", width: "100vw" }}>
       <S.Container>
         <S.Title>DIARY</S.Title>
         {mod < 0 ? (
-          <DiaryList setMod={setMod} />
+          <DiaryList setMod={setMod} setLen={setLen} />
         ) : (
-          <DiaryDetail setMod={setMod} mod={mod} />
+          <DiaryDetail setMod={setMod} mod={mod} len={len} />
         )}
       </S.Container>
     </div>

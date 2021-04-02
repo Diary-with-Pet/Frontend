@@ -1,8 +1,6 @@
 import Route from "./components";
-import { Provider } from "react-redux";
-import store, { customHistory } from "./store";
 import { createGlobalStyle } from "styled-components";
-import { Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 const GlobalStyle = createGlobalStyle`
 body{
   @font-face {
@@ -35,11 +33,8 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <Router history={customHistory}>
-        <Provider store={store}>
-          {/* <Redirect to={"/login"} /> */}
-          <Route />
-        </Provider>
+      <Router>
+        <Route />
       </Router>
     </div>
   );

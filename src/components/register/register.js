@@ -78,7 +78,10 @@ const Register = () => {
       });
       client
         .post("/user/register/", formData)
-        .then((e) => history.push("/main"))
+        .then((e) => {
+          alert("회원가입 성공!");
+          history.push("/login");
+        })
         .catch((e) => alert("회원가입에 실패하였습니다."));
     }
   };

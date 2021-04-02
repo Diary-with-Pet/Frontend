@@ -4,7 +4,15 @@ import * as S from "styles/myPage";
 
 import { getAccess } from "api";
 
-const EditModal = ({ setModalVisivle, curData }) => {
+const EditModal = ({ setModalVisivle, curData, getMypage }) => {
+  const imageReader = (e) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(e);
+    fileReader.onload = (e) => {
+      dispatch({ type: "IMAGE", image: e.target.result });
+    };
+  };
+
   const reducer = (state, action) => {
     switch (action.type) {
       case "IMAGE_PATH":
@@ -16,7 +24,11 @@ const EditModal = ({ setModalVisivle, curData }) => {
         return { ...state, name: action.name };
       case "BODY":
         if (action.body.length > 50) return { ...state };
-        return { ...state, body: action.body, bodyLength: action.body.length };
+        return {
+          ...state,
+          body: action.body,
+          bodyLength: action.body.length || 0,
+        };
       case "INIT":
         return { ...action.data };
       default:
@@ -37,22 +49,14 @@ const EditModal = ({ setModalVisivle, curData }) => {
     dispatch({
       type: "INIT",
       data: {
-        image: curData.profile_image,
+        image: curData.profile_image || undefined,
         imagePath: curData.profile_image,
         name: curData.username,
         body: curData.profile,
-        bodyLength: curData.profile.length,
+        bodyLength: curData.profile ? curData.profile.length : 0,
       },
     });
   }, [curData]);
-
-  const imageReader = (e) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(e);
-    fileReader.onload = (e) => {
-      dispatch({ type: "IMAGE", image: e.target.result });
-    };
-  };
 
   const nameInputHandle = (e) => {
     if (e.target.value.length > 10) {
@@ -81,8 +85,11 @@ const EditModal = ({ setModalVisivle, curData }) => {
     }
 
     getAccess()
-      .patch(`/mypage/update/${curData.id}`, formData)
+      .patch(`/mypage/update/${curData.id}/`, formData)
       .then((e) => setModalVisivle(false))
+      .then(() => {
+        getMypage();
+      })
       .catch((e) => alert("수정에 실패하였습니다."));
   };
 
@@ -91,7 +98,7 @@ const EditModal = ({ setModalVisivle, curData }) => {
       <S.BlackOverlay onClick={(e) => setModalVisivle(false)} />
       <S.ModalWhiteBox>
         <label htmlFor="image">
-          <S.ImageLabel src={data.image} />
+          <S.ImageLabel src={data.image || undefined} />
         </label>
         <S.ImageInput
           id="image"

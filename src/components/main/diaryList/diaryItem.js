@@ -2,9 +2,7 @@ import React from "react";
 
 import * as S from "styles/diary";
 
-const DiaryItem = ({ id, isSelected, setMod, setSelect }) => {
-  console.log(isSelected);
-
+const DiaryItem = ({ id, data, isSelected, setMod, setSelect }) => {
   return (
     <S.ItemContainer>
       <S.CheckBox htmlFor={`check${id}`} isSelected={isSelected}>
@@ -17,15 +15,13 @@ const DiaryItem = ({ id, isSelected, setMod, setSelect }) => {
         onClick={() => setSelect(id)}
       />
       <S.ItemTitle
-        size={2}
-        style={{ width: "30rem", textAlign: "left" }}
         onClick={() => {
           setMod(id);
         }}
       >
-        Title
+        {data.title}
       </S.ItemTitle>
-      <S.ItemDate>2020-03-08</S.ItemDate>
+      <S.ItemDate>{data.date_created}</S.ItemDate>
     </S.ItemContainer>
   );
 };

@@ -6,11 +6,12 @@ import noPicture from "image/no_picture.png";
 
 import { getAccess } from "api";
 
-const MyPetItem = ({ setModalVisivle, setMod, data, setId }) => {
+const MyPetItem = ({ setModalVisivle, setMod, data, setId, setData }) => {
   const onDelete = () => {
     getAccess()
       .delete(`/mypet/${data.id}/`)
       .then((e) => alert("펫 목록을 삭제하였습니다."))
+      .then(() => setData())
       .catch(() => alert("펫 목록 삭제에 실패하였습니다."));
   };
   return (
@@ -33,7 +34,9 @@ const MyPetItem = ({ setModalVisivle, setMod, data, setId }) => {
             <S.SpeciesBox>{data.species}</S.SpeciesBox>
           </S.FlexBoxRow>
           <S.SpeciesBox size={1}>{data.birthday}</S.SpeciesBox>
-          <S.BodyArea readOnly={true}>{data.profile}</S.BodyArea>
+          <S.BodyArea value={data.profile} readOnly={true}>
+            {data.profile}
+          </S.BodyArea>
         </S.InfoBox>
       </S.InfoContainer>
       <S.ButtonsBox>

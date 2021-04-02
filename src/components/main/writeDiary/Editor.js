@@ -1,3 +1,4 @@
+import { getAccess } from "api";
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 
@@ -14,17 +15,34 @@ const Editor = () => {
   const editor = useRef();
 
   const onSubmit = () => {
-    setBody("");
-    console.log(text.join(","));
-    console.log(image);
+    // console.log(text.join(","));
+    // console.log(image);
+    // console.log(title);
 
     const data = new FormData();
+    for (let img of image) {
+      data.append("image", img);
+    }
     data.append("title", title);
-    data.append("contents", text.join(","));
-    data.append("image", image);
-    console.log(data);
-    setText([]);
-    setImage([]);
+    data.append("content", text.join(","));
+
+    getAccess()
+      .post("/diary/", data)
+      .then(() => {
+        alert("일기 작성을 완료하였습니다.");
+        setBody("");
+        setText([]);
+        setImage([]);
+        SetTitle("");
+        let target = document.querySelector(".list");
+        target.scrollIntoView({
+          behavior: "smooth",
+        });
+      })
+      .catch(() => alert("일기를 저장하지 못했습니다"));
+    // console.log(data);
+    // setText([]);
+    // setImage([]);
   };
   const modules = {
     toolbar: {
@@ -50,7 +68,10 @@ const Editor = () => {
     // eslint-disable-next-line array-callback-return
     e.ops.map((e) => {
       if (typeof e.insert === "string") txt.push(e.insert);
-      else img.push(encoding(e.insert.image, img.length));
+      else {
+        img.push(encoding(e.insert.image, img.length));
+        txt.push("*img*");
+      }
     });
     setText(txt);
     if (image.length <= 3) setImage(img);
@@ -69,7 +90,7 @@ const Editor = () => {
       <div className="text-editor">
         <ReactQuill
           ref={editor}
-          style={{ width: "60rem", height: "30rem" }}
+          style={{ width: "60rem", height: "28rem" }}
           modules={modules}
           value={body}
           onChange={(content, delta, source, editor) => {

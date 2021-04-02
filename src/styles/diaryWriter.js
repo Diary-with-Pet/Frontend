@@ -23,6 +23,7 @@ export const EditorContiner = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: "Light";
 `;
 export const TitleInput = styled.input`
   width: 60rem;
@@ -31,7 +32,7 @@ export const TitleInput = styled.input`
 
   margin: 1rem 0;
   font-family: "Bold";
-  font-size: 1.5rem;
+  font-size: 1rem;
 
   box-sizing: border-box;
   padding: 0.5rem;

@@ -8,9 +8,9 @@ const palette = {
   // mainColor: "#7E5251",
   // subColor1: "#A9A0A5",
   // subColor2: "#A8795B",
-  mainColor: "#393b45",
-  subColor1: "#6e7889",
-  subColor2: "#d8d9de",
+  mainColor: "#90C2D9",
+  subColor1: "#B2DFF4",
+  subColor2: "#BDE3F2",
 };
 
 export default palette;

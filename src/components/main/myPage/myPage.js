@@ -25,17 +25,24 @@ const MyPage = () => {
     return () => window.removeEventListener("wheel", LimitWheel);
   }, [modalVisible]);
 
-  useEffect(() => {
+  const getMypage = () => {
     getAccess()
       .get("/mypage/list")
       .then((e) => setMyData(e.data[0]))
       .catch(() => alert("마이페이지 불러오기에 실패하였습니다."));
+  };
+  useEffect(() => {
+    getMypage();
   }, []);
 
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
       {modalVisible && (
-        <EditModal setModalVisivle={setModalVisivle} curData={myData} />
+        <EditModal
+          getMypage={getMypage}
+          setModalVisivle={setModalVisivle}
+          curData={myData}
+        />
       )}
       <S.Container>
         <S.Title>MY PAGE</S.Title>

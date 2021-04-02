@@ -5,26 +5,7 @@ import * as S from "styles/todo";
 import { getAccess } from "api";
 
 const TodoList = () => {
-  const [list, setList] = useState([
-    {
-      id: 11,
-      title: "title수정",
-      content: "ㅎㅎ",
-      classification: 3,
-    },
-    {
-      id: 12,
-      title: "title2",
-      content: "cont2",
-      classification: 1,
-    },
-    {
-      id: 13,
-      title: "cnrkcnrl",
-      content: "ㅎㅎ",
-      classification: 1,
-    },
-  ]);
+  const [list, setList] = useState([]);
   const [text, setText] = useState("");
 
   const requestList = () => {
@@ -64,7 +45,7 @@ const TodoList = () => {
     list.map((l) => {
       if (l.id === parseInt(data)) {
         getAccess()
-          .patch(`/todo/${l.id}`, {
+          .patch(`/todo/${l.id}/`, {
             classification: value,
           })
           .then(() => requestList())
@@ -84,7 +65,8 @@ const TodoList = () => {
       classification: 1,
     };
     getAccess()
-      .post("/todo", data)
+      .post("/todo/", data)
+      .then(() => requestList())
       .catch(() => alert("투두리스트 등록을 실패했습니다."));
     setText("");
   };
@@ -112,9 +94,13 @@ const TodoList = () => {
               onDrop={(e) => onDrop(e, 1)}
             >
               <S.ListName>NO STARTED</S.ListName>
-              <div class="container">
-                {todo.map((e) => (
-                  <TodoItem item={e} requestList={requestList}></TodoItem>
+              <div className="container">
+                {todo.map((e, i) => (
+                  <TodoItem
+                    item={e}
+                    key={i}
+                    requestList={requestList}
+                  ></TodoItem>
                 ))}
               </div>
             </S.DragArea>
@@ -126,9 +112,13 @@ const TodoList = () => {
               onDrop={(e) => onDrop(e, 2)}
             >
               <S.ListName>PROGRESS</S.ListName>
-              <div class="container">
-                {progress.map((e) => (
-                  <TodoItem item={e} requestList={requestList}></TodoItem>
+              <div className="container">
+                {progress.map((e, i) => (
+                  <TodoItem
+                    item={e}
+                    key={i}
+                    requestList={requestList}
+                  ></TodoItem>
                 ))}
               </div>
             </S.DragArea>
@@ -140,9 +130,13 @@ const TodoList = () => {
               onDrop={(e) => onDrop(e, 3)}
             >
               <S.ListName>COMPLETE</S.ListName>
-              <div class="container">
-                {done.map((e) => (
-                  <TodoItem item={e} requestList={requestList}></TodoItem>
+              <div className="container">
+                {done.map((e, i) => (
+                  <TodoItem
+                    item={e}
+                    key={i}
+                    requestList={requestList}
+                  ></TodoItem>
                 ))}
               </div>
             </S.DragArea>
