@@ -6,17 +6,20 @@ import { TodoList } from "components/main/todoList";
 import { DiaryContainer } from "components/main/diaryList";
 
 import { WriteDiary } from "./writeDiary";
+import { useHistory } from "react-router-dom";
 
 const Main = () => {
   const [prePos, setPrePos] = useState(0);
   let delta = 0;
   const container = useRef();
+  const history = useHistory();
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setPrePos(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    delta = 0;
-  }, []);
+    if (!localStorage.getItem("accessToken")) history.push("/login");
+  }, [history]);
+
   const scrollMoveTo = (num) => {
     let target = container.current.childNodes[num];
     target.scrollIntoView({
